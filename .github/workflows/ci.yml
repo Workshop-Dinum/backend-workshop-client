@@ -20,7 +20,7 @@ jobs:
         run: npm install
 
       - name: Lint
-        run: npx eslint . --ext .ts --ignore-pattern prisma/generated/ --ignore-pattern "*.config.js"
+        run: npx eslint src --ext .ts
 
       - name: Run tests
         run: npm test
