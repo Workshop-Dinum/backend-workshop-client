@@ -1,0 +1,51 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# TypeScript
+dist/
+build/
+*.tsbuildinfo
+
+# Prisma
+prisma/migrations/
+.prisma/
+
+# VSCode
+.vscode/
+
+# Coverage
+coverage/
+*.lcov
+
+# Jest
+jest-cache/
+jest-coverage/
+.cache/
+
+# Docker
+docker/*.pid
+docker/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.swp
+*.swo
+.idea/
+*.bak
