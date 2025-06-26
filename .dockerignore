@@ -1,0 +1,29 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Env files (ne jamais les copier dans l'image)
+.env
+.env.local
+.env.development
+.env.production
+
+# Logs
+*.log
+logs
+*.sqlite
+
+# Build output
+dist
+build
+coverage
+
+# Prisma generated files (si tu ne veux pas les inclure)
+prisma/generated
+
+# IDE / OS
+.vscode
+.idea
+.DS_Store
+*.swp

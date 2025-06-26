@@ -1,10 +1,20 @@
+# Utilise une image Node légère
 FROM node:20-alpine
 
+# Crée un dossier de travail dans le conteneur
 WORKDIR /app
 
+# Copie uniquement les fichiers package.json et lock pour installer les dépendances
 COPY package*.json ./
+
+# Installe toutes les dépendances (y compris celles de dev)
 RUN npm install
 
+# Copie tout le reste du projet dans l’image
 COPY . .
 
-CMD ["npm", "run", "dev"]
+# Expose le port pour pouvoir accéder à l'API depuis l’extérieur
+EXPOSE 3000
+
+# Génère le client Prisma au démarrage PUIS lance le serveur en mode dev
+CMD ["sh", "-c", "npx prisma generate && npm run dev"]
