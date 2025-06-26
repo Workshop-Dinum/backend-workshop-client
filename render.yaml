@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: backend-workshop-client
+    env: docker
+    repo: https://github.com/Workshop-Dinum/backend-workshop-client
+    branch: main
+    dockerfilePath: docker/Dockerfile.prod
+    autoDeploy: true
+    buildFilter:
+      paths:
+        - ./
+    pullRequestPreviewsEnabled: true
+    plan: free
