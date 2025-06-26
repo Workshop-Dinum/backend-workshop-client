@@ -21,9 +21,9 @@ build/
 *.tsbuildinfo
 
 # Prisma
-prisma/migrations/
 .prisma/
 generated/
+# (on garde prisma/migrations/ car Render en a besoin pour migrate deploy)
 
 # VSCode
 .vscode/
