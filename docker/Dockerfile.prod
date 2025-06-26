@@ -29,11 +29,8 @@ COPY --from=build /app/prisma ./prisma
 # Réinstalle uniquement les dépendances de production
 RUN npm ci --only=production
 
-# Génére de nouveau Prisma Client (indispensable à l’exécution)
+# Génère à nouveau le client Prisma
 RUN npx prisma generate
-
-# Applique les migrations en base  (migration déjà créées en local)
-RUN npx prisma migrate deploy
 
 # Définit des variables d’environnement utiles
 ENV NODE_ENV=production
@@ -41,4 +38,5 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+# Applique les migrations au démarrage, puis lance l'app
+CMD npx prisma migrate deploy && node dist/server.js
