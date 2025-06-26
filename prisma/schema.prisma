@@ -6,10 +6,126 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Lycee {
+  id                Int             @id @default(autoincrement())
+  nom               String
+  adresse           String
+  academie          String
+  email_contact     String
+  telephone         String
+  logo_url          String
+  site_web          String?
+  periode_de_stage  String
+  filieres          LyceeFiliere[]
+  lyceens           Lyceen[]
+}
+
+model Filiere {
+  id      Int              @id @default(autoincrement())
+  nom     String
+  lycees  LyceeFiliere[]
+  lyceens Lyceen[]
+  offres  OffreFiliere[]
+}
+
+model Niveau {
+  id      Int       @id @default(autoincrement())
+  nom     String
+  lyceens Lyceen[]
+  offres  Offre[]
+}
+
+model LyceeFiliere {
+  id         Int     @id @default(autoincrement())
+  lycee      Lycee   @relation(fields: [lyceeId], references: [id])
+  lyceeId    Int
+  filiere    Filiere @relation(fields: [filiereId], references: [id])
+  filiereId  Int
+}
+
+model Lyceen {
+  id                   Int       @id @default(autoincrement())
+  nom                  String
+  prenom               String
+  date_naissance       DateTime
+  email_institutionnel String
+  email_personnel      String
+  telephone            String?
+  cv_url               String
+  mot_de_passe_hash    String
+  stage_trouve         Boolean
+  lycee                Lycee     @relation(fields: [lyceeId], references: [id])
+  lyceeId              Int
+  filiere              Filiere   @relation(fields: [filiereId], references: [id])
+  filiereId            Int
+  niveau               Niveau    @relation(fields: [niveauId], references: [id])
+  niveauId             Int
+  propositions         Proposition[]
+}
+
+model SecteurActivite {
+  id         Int          @id @default(autoincrement())
+  nom        String
+  entreprises Entreprise[]
+}
+
+model Entreprise {
+  id                Int           @id @default(autoincrement())
+  siret             String
+  nom               String
+  adresse           String
+  region            String
+  contact_nom       String
+  contact_email     String
+  contact_telephone String
+  secteur           SecteurActivite @relation(fields: [secteurId], references: [id])
+  secteurId         Int
+  mot_de_passe_hash String
+  offres            Offre[]
+  propositions      Proposition[]
+}
+
+model Offre {
+  id             Int            @id @default(autoincrement())
+  titre          String
+  description    String
+  duree          String
+  lieu           String
+  periode        String
+  cv_requis      Boolean
+  message_requis Boolean
+  date_limite    DateTime
+  entreprise     Entreprise     @relation(fields: [entrepriseId], references: [id])
+  entrepriseId   Int
+  niveau         Niveau         @relation(fields: [niveauId], references: [id])
+  niveauId       Int
+  filieres       OffreFiliere[]
+  propositions   Proposition[]
+}
+
+model OffreFiliere {
+  id         Int     @id @default(autoincrement())
+  offre      Offre   @relation(fields: [offreId], references: [id])
+  offreId    Int
+  filiere    Filiere @relation(fields: [filiereId], references: [id])
+  filiereId  Int
+}
+
+model Proposition {
+  id            Int        @id @default(autoincrement())
+  entreprise    Entreprise @relation(fields: [entrepriseId], references: [id])
+  entrepriseId  Int
+  lyceen        Lyceen     @relation(fields: [lyceenId], references: [id])
+  lyceenId      Int
+  offre         Offre      @relation(fields: [offreId], references: [id])
+  offreId       Int
+  message       String
+  date_envoi    DateTime
 }

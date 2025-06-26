@@ -23,6 +23,7 @@ build/
 # Prisma
 prisma/migrations/
 .prisma/
+generated/
 
 # VSCode
 .vscode/
