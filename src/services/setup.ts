@@ -1,14 +1,22 @@
-// src/services/setup.ts
 import express, { Express } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import authRouter from '../routes/auth.routes'
+import lyceeRouter from '../routes/lycee.routes'
+import lyceenRouter from '../routes/lyceen.routes'
+import { errorHandler } from '../middlewares/error.middleware'
 
-// Fonction pour configurer express (middlewares, routes plus tard)
+// Configuration globale de l'application
 export function setupApp(app: Express) {
-  app.use(cors())
-  app.use(helmet())
-  app.use(express.json())
+  app.use(cors()) // Autorise les requêtes cross-origin
+  app.use(helmet()) // Sécurise les headers HTTP
+  app.use(express.json()) // Parse les corps JSON
 
-  // Ici on ajoutera les routes plus tard
-  // ex: app.use('/api/users', userRouter)
+  // Déclaration des routes
+  app.use('/api/login', authRouter)
+  app.use('/api/lycees', lyceeRouter)
+  app.use('/api/lyceens', lyceenRouter)
+
+  // Middleware global d’erreurs
+  app.use(errorHandler)
 }
