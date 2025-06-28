@@ -14,7 +14,20 @@ beforeAll(async () => {
   console.log('✅ Base de données connectée (test)');
 });
 
-// Nettoyage des données après chaque test
+beforeEach(async () => {
+  // Nettoyer toutes les données de test avant chaque test
+  await prisma.proposition.deleteMany();
+  await prisma.offreFiliere.deleteMany();
+  await prisma.lyceeFiliere.deleteMany();
+  await prisma.lyceen.deleteMany();
+  await prisma.lycee.deleteMany();
+  await prisma.offre.deleteMany();
+  await prisma.entreprise.deleteMany();
+  await prisma.filiere.deleteMany();
+  await prisma.niveau.deleteMany();
+  await prisma.secteurActivite.deleteMany();
+});
+
 afterEach(async () => {
   await prisma.lyceen.deleteMany();
   await prisma.lycee.deleteMany();
