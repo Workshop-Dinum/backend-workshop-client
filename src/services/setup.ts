@@ -14,12 +14,12 @@ export function setupApp(app: Express) {
   app.use(express.json()) // Parse les corps JSON
 
   // Déclaration des routes
-  app.use('/api/login', authRouter)
+  app.use('/api', authRouter)
   app.use('/api/lycees', lyceeRouter)
   app.use('/api/lyceens', lyceenRouter)
   app.use('/api', passwordRouter)
 
 
-  // Middleware global d’erreurs
+  // Middleware global d'erreurs
   app.use(errorHandler)
 }
