@@ -16,7 +16,7 @@ model Lycee {
   departement       String
   region            String
   academie          String
-  email_contact     String
+  email_contact     String  @unique 
   telephone         String
   mot_de_passe_hash String         
   logo_url          String
