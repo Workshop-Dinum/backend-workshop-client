@@ -18,6 +18,7 @@ model Lycee {
   academie          String
   email_contact     String
   telephone         String
+  mot_de_passe_hash String         
   logo_url          String
   site_web          String?
   periode_de_stage  String
