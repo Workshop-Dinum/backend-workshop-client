@@ -5,7 +5,10 @@ import { PrismaClient } from '@prisma/client'
 // Prisma est déjà connecté via setup.ts
 const prisma = new PrismaClient()
 
+let testCounter = 0
+
 function generateValidLycee(overrides = {}) {
+  testCounter++
   return {
     nom: "Lycée République",
     rue: "1 avenue de la République",
@@ -14,7 +17,7 @@ function generateValidLycee(overrides = {}) {
     departement: "75",
     region: "Île-de-France",
     academie: "Paris",
-    email_contact: `contact+${Date.now()}@lycee.fr`,
+    email_contact: `contact+${Date.now()}+${testCounter}@lycee.fr`,
     telephone: "0123456789",
     mot_de_passe: "motdepasse123",
     logo_url: "http://logo.com/logo.png",
@@ -29,6 +32,9 @@ describe('E2E - Authentification', () => {
   let createdLycee: any
 
   beforeEach(async () => {
+    // S'assurer que la base est vide
+    await prisma.lycee.deleteMany()
+    
     validLycee = generateValidLycee()
     // Créer un lycée pour les tests de connexion
     const res = await request(app).post('/api/lycees').send(validLycee)

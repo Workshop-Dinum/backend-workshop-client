@@ -5,7 +5,10 @@ import { PrismaClient } from '@prisma/client'
 // Prisma est déjà connecté via setup.ts
 const prisma = new PrismaClient()
 
+let testCounter = 0
+
 function generateValidLycee(overrides = {}) {
+  testCounter++
   return {
     nom: "Lycée République",
     rue: "1 avenue de la République",
@@ -14,7 +17,7 @@ function generateValidLycee(overrides = {}) {
     departement: "75",
     region: "Île-de-France",
     academie: "Paris",
-    email_contact: `contact+${Date.now()}@lycee.fr`,
+    email_contact: `contact+${Date.now()}+${testCounter}@lycee.fr`,
     telephone: "0123456789",
     mot_de_passe: "motdepasse123",
     logo_url: "http://logo.com/logo.png",
@@ -40,8 +43,10 @@ describe('E2E - Lycées', () => {
     })
 
     it('❌ échoue si email déjà utilisé', async () => {
-      const validLycée = generateValidLycee()
+      const email = `duplicate+${Date.now()}+${testCounter++}@lycee.fr`
+      const validLycée = generateValidLycee({ email_contact: email })
       await request(app).post('/api/lycees').send(validLycée)
+      // Utiliser exactement les mêmes données pour la deuxième tentative
       const res = await request(app).post('/api/lycees').send(validLycée)
       expect(res.statusCode).toBe(500)
     })
@@ -56,10 +61,13 @@ describe('E2E - Lycées', () => {
   // === Listing ===
   describe('GET /api/lycees', () => {
     beforeEach(async () => {
+      // S'assurer que la base est vide avant de créer les lycées
+      await prisma.lycee.deleteMany()
+      
+      // Créer exactement 2 lycées
       await request(app).post('/api/lycees').send(generateValidLycee())
       await request(app).post('/api/lycees').send(
         generateValidLycee({
-          email_contact: `autre+${Date.now()}@lycee.fr`,
           ville: 'Lyon',
           region: 'Auvergne-Rhône-Alpes',
           departement: '69'
@@ -100,14 +108,23 @@ describe('E2E - Lycées', () => {
     let email: string
 
     beforeEach(async () => {
+      // S'assurer que la base est vide
+      await prisma.lycee.deleteMany()
+      
       const validLycée = generateValidLycee()
       email = validLycée.email_contact
-      await request(app).post('/api/lycees').send(validLycée)
-      const res = await request(app).post('/api/login').send({
+      
+      // Créer le lycée
+      const createRes = await request(app).post('/api/lycees').send(validLycée)
+      expect(createRes.statusCode).toBe(201)
+      
+      // Se connecter pour obtenir le token
+      const loginRes = await request(app).post('/api/login').send({
         email: validLycée.email_contact,
         password: validLycée.mot_de_passe
       })
-      token = res.body.token
+      expect(loginRes.statusCode).toBe(200)
+      token = loginRes.body.token
     })
 
     it('✅ retourne le profil du lycée connecté', async () => {

@@ -16,6 +16,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   // Nettoyer toutes les données de test avant chaque test
+  // Ordre important : supprimer d'abord les entités qui dépendent des autres
   await prisma.proposition.deleteMany();
   await prisma.offreFiliere.deleteMany();
   await prisma.lyceeFiliere.deleteMany();
@@ -29,9 +30,17 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+  // Nettoyage supplémentaire après chaque test
+  await prisma.proposition.deleteMany();
+  await prisma.offreFiliere.deleteMany();
+  await prisma.lyceeFiliere.deleteMany();
   await prisma.lyceen.deleteMany();
   await prisma.lycee.deleteMany();
-  // Ajouter d'autres entités ici si besoin (offres, candidatures, etc.)
+  await prisma.offre.deleteMany();
+  await prisma.entreprise.deleteMany();
+  await prisma.filiere.deleteMany();
+  await prisma.niveau.deleteMany();
+  await prisma.secteurActivite.deleteMany();
 });
 
 // Déconnexion propre après tous les tests
