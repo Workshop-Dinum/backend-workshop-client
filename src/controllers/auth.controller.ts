@@ -7,7 +7,9 @@ import { generateToken } from '../utils/jwt.util'
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body
 
-  const lycee = await prisma.lycee.findUnique({ where: { email_contact: email } })
+  const lycee = await prisma.lycee.findUnique({
+    where: { email_contact: email }
+  })
 
   // Comparaison du mot de passe avec le hash
   if (!lycee || !(await bcrypt.compare(password, lycee.mot_de_passe_hash))) {
