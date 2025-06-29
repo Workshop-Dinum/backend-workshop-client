@@ -3,7 +3,10 @@ import {
   getLyceenProfil,
   updateLyceenProfil,
   getOffres,
-  postulerOffre
+  postulerOffre,
+  saveOffre,
+  deleteSauvegardeOffre,
+  getOffresSauvegardees
 } from '../controllers/lyceen.profil.controller'
 
 import { authenticateLyceen } from '../middlewares/lyceen.middleware'
@@ -169,5 +172,135 @@ router.get('/offres', authenticateLyceen, getOffres)
  *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
  */
 router.post('/offres/:id/postuler', authenticateLyceen, validatePostuler, postulerOffre)
+
+/**
+ * @swagger
+ * /lyceen/offres/{id}/sauvegarder:
+ *   post:
+ *     summary: Sauvegarder une offre pour le lycéen connecté
+ *     tags: [Lycéen]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'offre à sauvegarder
+ *     responses:
+ *       201:
+ *         description: Offre sauvegardée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 lyceenId:
+ *                   type: integer
+ *                 offreId:
+ *                   type: integer
+ *                 date:
+ *                   type: string
+ *                   format: date-time
+ *       400:
+ *         description: Offre déjà sauvegardée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ *       401:
+ *         description: Token d'authentification invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ *       404:
+ *         description: Offre introuvable
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ */
+router.post('/offres/:id/sauvegarder', authenticateLyceen, saveOffre)
+
+/**
+ * @swagger
+ * /lyceen/offres/{id}/sauvegarder:
+ *   delete:
+ *     summary: Supprimer une offre sauvegardée pour le lycéen connecté
+ *     tags: [Lycéen]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de l'offre à désauvegarder
+ *     responses:
+ *       200:
+ *         description: Offre désauvegardée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       401:
+ *         description: Token d'authentification invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ *       404:
+ *         description: Aucune sauvegarde trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ */
+router.delete('/offres/:id/sauvegarder', authenticateLyceen, deleteSauvegardeOffre)
+
+/**
+ * @swagger
+ * /lyceen/offres/sauvegardees:
+ *   get:
+ *     summary: Lister les offres sauvegardées du lycéen connecté
+ *     tags: [Lycéen]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Liste des offres sauvegardées
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   offreId:
+ *                     type: integer
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                   offre:
+ *                     $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/OffreLyceen'
+ *       401:
+ *         description: Token d'authentification invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
+ */
+router.get('/offres/sauvegardees', authenticateLyceen, getOffresSauvegardees)
 
 export default router

@@ -76,3 +76,48 @@ export async function postulerOffreService(lyceenId: number, offreId: number, me
     }
   })
 }
+
+// Sauvegarder une offre pour un lycéen
+export async function saveOffrePourLyceenService(lyceenId: number, offreId: number) {
+  // Vérifie si l'offre existe
+  const offre = await prisma.offre.findUnique({ where: { id: offreId } })
+  if (!offre) throw new Error('Offre introuvable')
+
+  // Vérifie si déjà sauvegardée
+  const deja = await prisma.offreSauvegardee.findUnique({
+    where: { lyceenId_offreId: { lyceenId, offreId } }
+  })
+  if (deja) throw new Error('Offre déjà sauvegardée')
+
+  // Crée la sauvegarde
+  return prisma.offreSauvegardee.create({
+    data: { lyceenId, offreId }
+  })
+}
+
+// Supprimer une offre sauvegardée
+export async function deleteOffreSauvegardeePourLyceenService(lyceenId: number, offreId: number) {
+  const deleted = await prisma.offreSauvegardee.deleteMany({
+    where: { lyceenId, offreId }
+  })
+  if (deleted.count === 0) throw new Error('Aucune sauvegarde trouvée')
+  return { success: true }
+}
+
+// Lister les offres sauvegardées d'un lycéen
+export async function getOffresSauvegardeesPourLyceenService(lyceenId: number) {
+  const sauvegardes = await prisma.offreSauvegardee.findMany({
+    where: { lyceenId },
+    include: {
+      offre: {
+        include: {
+          entreprise: { select: { nom: true, ville: true, secteur: { select: { nom: true } } } },
+          filieres: { select: { filiere: { select: { nom: true } } } },
+          niveau: { select: { nom: true } }
+        }
+      }
+    },
+    orderBy: { date: 'desc' }
+  })
+  return sauvegardes
+}

@@ -67,6 +67,7 @@ model Lyceen {
   niveau               Niveau      @relation(fields: [niveauId], references: [id])
   niveauId             Int
   propositions         Proposition[]
+  offresSauvegardees   OffreSauvegardee[]
 }
 
 model SecteurActivite {
@@ -110,6 +111,7 @@ model Offre {
   niveauId       Int
   filieres       OffreFiliere[]
   propositions   Proposition[]
+  offresSauvegardees OffreSauvegardee[]
 }
 
 model OffreFiliere {
@@ -130,4 +132,15 @@ model Proposition {
   offreId       Int
   message       String
   date_envoi    DateTime
+}
+
+model OffreSauvegardee {
+  id        Int     @id @default(autoincrement())
+  lyceen    Lyceen  @relation(fields: [lyceenId], references: [id])
+  lyceenId  Int
+  offre     Offre   @relation(fields: [offreId], references: [id])
+  offreId   Int
+  date      DateTime @default(now())
+
+  @@unique([lyceenId, offreId])
 }
