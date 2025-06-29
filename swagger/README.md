@@ -32,8 +32,12 @@ https://backend-workshop-client.onrender.com/api-docs
 - `GET /api/lycees` - Récupérer tous les lycées
 - `GET /api/lycees/profil` - Récupérer le profil du lycée connecté
 
-### 👨‍🎓 Lycéens
-- `POST /api/lyceens` - Ajouter un nouveau lycéen (authentification requise)
+### 👨‍🎓 Parcours Lycéen
+- `POST /api/lyceen/login` - Connexion d'un lycéen
+- `GET /api/lyceen/profil` - Récupérer le profil du lycéen connecté
+- `PUT /api/lyceen/profil` - Mettre à jour le profil du lycéen (téléphone, CV)
+- `GET /api/lyceen/offres` - Lister les offres de stage filtrées
+- `POST /api/lyceen/offres/{id}/postuler` - Postuler à une offre
 
 ## 🔧 Configuration
 
@@ -105,4 +109,61 @@ Pour mettre à jour la documentation :
 
 L'API est déployée sur Render :
 - **URL de production** : `https://backend-workshop-client.onrender.com`
-- **Documentation** : `https://backend-workshop-client.onrender.com/api-docs` 
+- **Documentation** : `https://backend-workshop-client.onrender.com/api-docs`
+
+### 👨‍🎓 Parcours Lycéen
+- `POST /api/lyceen/login` - Connexion d'un lycéen
+- `GET /api/lyceen/profil` - Récupérer le profil du lycéen connecté
+- `PUT /api/lyceen/profil` - Mettre à jour le profil du lycéen (téléphone, CV)
+- `GET /api/lyceen/offres` - Lister les offres de stage filtrées
+- `POST /api/lyceen/offres/{id}/postuler` - Postuler à une offre
+
+#### Schémas utilisés
+- `LoginRequest`, `LoginResponse` (auth.yaml)
+- `Lyceen`, `LyceenUpdate` (lyceen.yaml)
+- `OffreLyceen`, `OffreLyceenList`, `PropositionLyceen` (lyceen.yaml)
+- `Error` (lyceen.yaml)
+
+#### Exemples d'utilisation
+
+- **Connexion lycéen**
+  ```json
+  POST /api/lyceen/login
+  {
+    "email": "marie.dupont@lycee.fr",
+    "password": "motdepasse123"
+  }
+  // Réponse : { "token": "..." }
+  ```
+
+- **Récupérer le profil**
+  ```json
+  GET /api/lyceen/profil
+  // Header: Authorization: Bearer <token>
+  // Réponse : { ...profil lycéen... }
+  ```
+
+- **Mettre à jour le profil**
+  ```json
+  PUT /api/lyceen/profil
+  {
+    "telephone": "0612345678",
+    "cv_url": "http://cv.com/marie-dupont.pdf"
+  }
+  // Réponse : { ...profil mis à jour... }
+  ```
+
+- **Lister les offres**
+  ```json
+  GET /api/lyceen/offres?region=Île-de-France&secteur=Informatique
+  // Réponse : [ ...offres... ]
+  ```
+
+- **Postuler à une offre**
+  ```json
+  POST /api/lyceen/offres/3/postuler
+  {
+    "message": "Je suis très motivé par ce stage."
+  }
+  // Réponse : { ...proposition créée... }
+  ``` 

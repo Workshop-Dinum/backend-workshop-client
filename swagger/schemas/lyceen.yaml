@@ -175,4 +175,104 @@ components:
           description: Identifiant de la filière
         niveauId:
           type: integer
-          description: Identifiant du niveau d'études 
+          description: Identifiant du niveau d'études
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Message d'erreur
+          example: "Token d'authentification invalide"
+
+    OffreLyceen:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        titre:
+          type: string
+          example: "Stage découverte informatique"
+        description:
+          type: string
+          example: "Stage d'observation en entreprise."
+        duree:
+          type: string
+          example: "2 semaines"
+        lieu:
+          type: string
+          example: "Paris"
+        periode:
+          type: string
+          example: "Janvier 2024"
+        cv_requis:
+          type: boolean
+          example: true
+        message_requis:
+          type: boolean
+          example: false
+        date_limite:
+          type: string
+          format: date-time
+          example: "2024-01-15T00:00:00.000Z"
+        entreprise:
+          type: object
+          properties:
+            nom:
+              type: string
+              example: "TechCorp"
+            ville:
+              type: string
+              example: "Paris"
+            secteur:
+              type: object
+              properties:
+                nom:
+                  type: string
+                  example: "Informatique"
+        filieres:
+          type: array
+          items:
+            type: object
+            properties:
+              filiere:
+                type: object
+                properties:
+                  nom:
+                    type: string
+                    example: "STI2D"
+        niveau:
+          type: object
+          properties:
+            nom:
+              type: string
+              example: "Première"
+
+    OffreLyceenList:
+      type: array
+      items:
+        $ref: '#/components/schemas/OffreLyceen'
+
+    PropositionLyceen:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        lyceenId:
+          type: integer
+          example: 2
+        offreId:
+          type: integer
+          example: 3
+        entrepriseId:
+          type: integer
+          example: 4
+        message:
+          type: string
+          example: "Je suis très motivé par ce stage."
+        date_envoi:
+          type: string
+          format: date-time
+          example: "2024-01-10T10:00:00.000Z" 
