@@ -18,6 +18,7 @@ beforeEach(async () => {
   // Nettoyer toutes les données de test avant chaque test
   // Ordre important : supprimer d'abord les entités qui dépendent des autres
   await prisma.proposition.deleteMany();
+  await prisma.offreSauvegardee.deleteMany();
   await prisma.offreFiliere.deleteMany();
   await prisma.lyceeFiliere.deleteMany();
   await prisma.lyceen.deleteMany();
@@ -32,6 +33,7 @@ beforeEach(async () => {
 afterEach(async () => {
   // Nettoyage supplémentaire après chaque test
   await prisma.proposition.deleteMany();
+  await prisma.offreSauvegardee.deleteMany();
   await prisma.offreFiliere.deleteMany();
   await prisma.lyceeFiliere.deleteMany();
   await prisma.lyceen.deleteMany();

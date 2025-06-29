@@ -99,15 +99,6 @@ describe('E2E - Parcours Lycéen', () => {
   let token: string
 
   beforeEach(async () => {
-    await prisma.proposition.deleteMany()
-    await prisma.lyceen.deleteMany()
-    await prisma.lycee.deleteMany()
-    await prisma.filiere.deleteMany()
-    await prisma.niveau.deleteMany()
-    await prisma.secteurActivite.deleteMany()
-    await prisma.entreprise.deleteMany()
-    await prisma.offre.deleteMany()
-
     testData = await createTestData()
     // Connexion lycéen
     const res = await request(app)
@@ -243,6 +234,139 @@ describe('E2E - Parcours Lycéen', () => {
         .send({ message: longMsg })
       // Selon la validation, soit 400 soit 201 si pas de limite
       expect([201, 400]).toContain(res.statusCode)
+    })
+  })
+
+  // --- SAUVEGARDER OFFRES ---
+  describe('POST /api/lyceen/offres/:id/sauvegarder', () => {
+    it('✅ sauvegarde une offre existante', async () => {
+      const res = await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(201)
+      expect(res.body.lyceenId).toBe(testData.lyceen.id)
+      expect(res.body.offreId).toBe(testData.offre.id)
+      expect(res.body.date).toBeDefined()
+    })
+
+    it('❌ échoue sans token', async () => {
+      const res = await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+      expect(res.statusCode).toBe(401)
+    })
+
+    it('❌ échoue avec token invalide', async () => {
+      const res = await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', 'Bearer faketoken')
+      expect(res.statusCode).toBe(403)
+    })
+
+    it('❌ échoue si offre inexistante', async () => {
+      const res = await request(app)
+        .post(`/api/lyceen/offres/99999/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(404)
+      expect(res.body.error).toBe('Offre introuvable')
+    })
+
+    it('❌ échoue si offre déjà sauvegardée', async () => {
+      // Sauvegarder une première fois
+      await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+
+      // Essayer de sauvegarder une deuxième fois
+      const res = await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(400)
+      expect(res.body.error).toBe('Offre déjà sauvegardée')
+    })
+  })
+
+  describe('DELETE /api/lyceen/offres/:id/sauvegarder', () => {
+    beforeEach(async () => {
+      // Sauvegarder une offre avant chaque test
+      await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+    })
+
+    it('✅ supprime une offre sauvegardée', async () => {
+      const res = await request(app)
+        .delete(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(200)
+      expect(res.body.success).toBe(true)
+    })
+
+    it('❌ échoue sans token', async () => {
+      const res = await request(app)
+        .delete(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+      expect(res.statusCode).toBe(401)
+    })
+
+    it('❌ échoue avec token invalide', async () => {
+      const res = await request(app)
+        .delete(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', 'Bearer faketoken')
+      expect(res.statusCode).toBe(403)
+    })
+
+    it('❌ échoue si offre non sauvegardée', async () => {
+      // Supprimer d'abord
+      await request(app)
+        .delete(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+
+      // Essayer de supprimer une deuxième fois
+      const res = await request(app)
+        .delete(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(404)
+      expect(res.body.error).toBe('Aucune sauvegarde trouvée')
+    })
+  })
+
+  describe('GET /api/lyceen/offres/sauvegardees', () => {
+    it('✅ retourne la liste des offres sauvegardées (vide)', async () => {
+      const res = await request(app)
+        .get('/api/lyceen/offres/sauvegardees')
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(200)
+      expect(Array.isArray(res.body)).toBe(true)
+      expect(res.body.length).toBe(0)
+    })
+
+    it('✅ retourne la liste avec une offre sauvegardée', async () => {
+      // Sauvegarder une offre
+      await request(app)
+        .post(`/api/lyceen/offres/${testData.offre.id}/sauvegarder`)
+        .set('Authorization', `Bearer ${token}`)
+
+      const res = await request(app)
+        .get('/api/lyceen/offres/sauvegardees')
+        .set('Authorization', `Bearer ${token}`)
+      expect(res.statusCode).toBe(200)
+      expect(Array.isArray(res.body)).toBe(true)
+      expect(res.body.length).toBe(1)
+      expect(res.body[0].offreId).toBe(testData.offre.id)
+      expect(res.body[0].offre).toBeDefined()
+      expect(res.body[0].offre.titre).toBe('Stage Dev')
+    })
+
+    it('❌ échoue sans token', async () => {
+      const res = await request(app)
+        .get('/api/lyceen/offres/sauvegardees')
+      expect(res.statusCode).toBe(401)
+    })
+
+    it('❌ échoue avec token invalide', async () => {
+      const res = await request(app)
+        .get('/api/lyceen/offres/sauvegardees')
+        .set('Authorization', 'Bearer faketoken')
+      expect(res.statusCode).toBe(403)
     })
   })
 }) 

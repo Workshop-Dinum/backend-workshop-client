@@ -85,7 +85,12 @@ export async function saveOffrePourLyceenService(lyceenId: number, offreId: numb
 
   // Vérifie si déjà sauvegardée
   const deja = await prisma.offreSauvegardee.findUnique({
-    where: { lyceenId_offreId: { lyceenId, offreId } }
+    where: { 
+      lyceenId_offreId: {
+        lyceenId,
+        offreId
+      }
+    }
   })
   if (deja) throw new Error('Offre déjà sauvegardée')
 
