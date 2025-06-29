@@ -1,0 +1,178 @@
+components:
+  schemas:
+    Lyceen:
+      type: object
+      required:
+        - nom
+        - prenom
+        - email_institutionnel
+        - email_personnel
+        - date_naissance
+        - telephone
+        - lyceeId
+        - filiereId
+        - niveauId
+      properties:
+        id:
+          type: integer
+          description: Identifiant unique du lycéen
+          example: 1
+        nom:
+          type: string
+          description: Nom de famille du lycéen
+          example: "Dupont"
+        prenom:
+          type: string
+          description: Prénom du lycéen
+          example: "Marie"
+        email_institutionnel:
+          type: string
+          format: email
+          description: Email institutionnel du lycéen
+          example: "marie.dupont@lycee.fr"
+        email_personnel:
+          type: string
+          format: email
+          description: Email personnel du lycéen
+          example: "marie.dupont@gmail.com"
+        date_naissance:
+          type: string
+          format: date-time
+          description: Date de naissance du lycéen
+          example: "2005-03-15T00:00:00.000Z"
+        cv_url:
+          type: string
+          format: uri
+          description: URL du CV du lycéen
+          example: "http://cv.com/marie-dupont.pdf"
+        stage_trouve:
+          type: boolean
+          description: Indique si le lycéen a trouvé un stage
+          example: false
+        telephone:
+          type: string
+          description: Numéro de téléphone du lycéen
+          example: "0612345678"
+        lyceeId:
+          type: integer
+          description: Identifiant du lycée d'appartenance
+          example: 1
+        filiereId:
+          type: integer
+          description: Identifiant de la filière
+          example: 1
+        niveauId:
+          type: integer
+          description: Identifiant du niveau d'études
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          description: Date de création
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date de dernière modification
+
+    LyceenCreate:
+      type: object
+      required:
+        - nom
+        - prenom
+        - email_institutionnel
+        - email_personnel
+        - date_naissance
+        - telephone
+        - lyceeId
+        - filiereId
+        - niveauId
+      properties:
+        nom:
+          type: string
+          description: Nom de famille du lycéen
+          example: "Dupont"
+        prenom:
+          type: string
+          description: Prénom du lycéen
+          example: "Marie"
+        email_institutionnel:
+          type: string
+          format: email
+          description: Email institutionnel du lycéen
+          example: "marie.dupont@lycee.fr"
+        email_personnel:
+          type: string
+          format: email
+          description: Email personnel du lycéen
+          example: "marie.dupont@gmail.com"
+        date_naissance:
+          type: string
+          format: date-time
+          description: Date de naissance du lycéen
+          example: "2005-03-15T00:00:00.000Z"
+        cv_url:
+          type: string
+          format: uri
+          description: URL du CV du lycéen
+          example: "http://cv.com/marie-dupont.pdf"
+        stage_trouve:
+          type: boolean
+          description: Indique si le lycéen a trouvé un stage
+          example: false
+        telephone:
+          type: string
+          description: Numéro de téléphone du lycéen
+          example: "0612345678"
+        lyceeId:
+          type: integer
+          description: Identifiant du lycée d'appartenance
+          example: 1
+        filiereId:
+          type: integer
+          description: Identifiant de la filière
+          example: 1
+        niveauId:
+          type: integer
+          description: Identifiant du niveau d'études
+          example: 1
+
+    LyceenUpdate:
+      type: object
+      properties:
+        nom:
+          type: string
+          description: Nom de famille du lycéen
+        prenom:
+          type: string
+          description: Prénom du lycéen
+        email_institutionnel:
+          type: string
+          format: email
+          description: Email institutionnel du lycéen
+        email_personnel:
+          type: string
+          format: email
+          description: Email personnel du lycéen
+        date_naissance:
+          type: string
+          format: date-time
+          description: Date de naissance du lycéen
+        cv_url:
+          type: string
+          format: uri
+          description: URL du CV du lycéen
+        stage_trouve:
+          type: boolean
+          description: Indique si le lycéen a trouvé un stage
+        telephone:
+          type: string
+          description: Numéro de téléphone du lycéen
+        lyceeId:
+          type: integer
+          description: Identifiant du lycée d'appartenance
+        filiereId:
+          type: integer
+          description: Identifiant de la filière
+        niveauId:
+          type: integer
+          description: Identifiant du niveau d'études 

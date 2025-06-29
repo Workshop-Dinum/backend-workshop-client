@@ -39,9 +39,6 @@ function generateValidLyceen(overrides = {}) {
     cv_url: "http://cv.com/marie-dupont.pdf",
     stage_trouve: false,
     telephone: "0612345678",
-    lyceeId: 1,
-    filiereId: 1,
-    niveauId: 1,
     ...overrides
   }
 }

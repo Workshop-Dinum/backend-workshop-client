@@ -1,0 +1,196 @@
+components:
+  schemas:
+    Lycee:
+      type: object
+      required:
+        - nom
+        - rue
+        - code_postal
+        - ville
+        - departement
+        - region
+        - academie
+        - email_contact
+        - telephone
+        - mot_de_passe
+      properties:
+        id:
+          type: integer
+          description: Identifiant unique du lycée
+          example: 1
+        nom:
+          type: string
+          description: Nom du lycée
+          example: "Lycée République"
+        rue:
+          type: string
+          description: Adresse du lycée
+          example: "1 avenue de la République"
+        code_postal:
+          type: string
+          description: Code postal
+          example: "75011"
+        ville:
+          type: string
+          description: Ville
+          example: "Paris"
+        departement:
+          type: string
+          description: Département
+          example: "75"
+        region:
+          type: string
+          description: Région
+          example: "Île-de-France"
+        academie:
+          type: string
+          description: Académie
+          example: "Paris"
+        email_contact:
+          type: string
+          format: email
+          description: Email de contact du lycée
+          example: "contact@lycee-republique.fr"
+        telephone:
+          type: string
+          description: Numéro de téléphone
+          example: "0123456789"
+        mot_de_passe:
+          type: string
+          description: Mot de passe (requis à la création)
+          example: "motdepasse123"
+        logo_url:
+          type: string
+          format: uri
+          description: URL du logo du lycée
+          example: "http://logo.com/logo.png"
+        site_web:
+          type: string
+          format: uri
+          description: Site web du lycée
+          example: "http://lycee-republique.fr"
+        periode_de_stage:
+          type: string
+          description: Période de stage
+          example: "janvier - mars"
+        createdAt:
+          type: string
+          format: date-time
+          description: Date de création
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date de dernière modification
+
+    LyceeCreate:
+      type: object
+      required:
+        - nom
+        - rue
+        - code_postal
+        - ville
+        - departement
+        - region
+        - academie
+        - email_contact
+        - telephone
+        - mot_de_passe
+      properties:
+        nom:
+          type: string
+          description: Nom du lycée
+          example: "Lycée République"
+        rue:
+          type: string
+          description: Adresse du lycée
+          example: "1 avenue de la République"
+        code_postal:
+          type: string
+          description: Code postal
+          example: "75011"
+        ville:
+          type: string
+          description: Ville
+          example: "Paris"
+        departement:
+          type: string
+          description: Département
+          example: "75"
+        region:
+          type: string
+          description: Région
+          example: "Île-de-France"
+        academie:
+          type: string
+          description: Académie
+          example: "Paris"
+        email_contact:
+          type: string
+          format: email
+          description: Email de contact du lycée
+          example: "contact@lycee-republique.fr"
+        telephone:
+          type: string
+          description: Numéro de téléphone
+          example: "0123456789"
+        mot_de_passe:
+          type: string
+          description: Mot de passe
+          example: "motdepasse123"
+        logo_url:
+          type: string
+          format: uri
+          description: URL du logo du lycée
+          example: "http://logo.com/logo.png"
+        site_web:
+          type: string
+          format: uri
+          description: Site web du lycée
+          example: "http://lycee-republique.fr"
+        periode_de_stage:
+          type: string
+          description: Période de stage
+          example: "janvier - mars"
+
+    LyceeUpdate:
+      type: object
+      properties:
+        nom:
+          type: string
+          description: Nom du lycée
+        rue:
+          type: string
+          description: Adresse du lycée
+        code_postal:
+          type: string
+          description: Code postal
+        ville:
+          type: string
+          description: Ville
+        departement:
+          type: string
+          description: Département
+        region:
+          type: string
+          description: Région
+        academie:
+          type: string
+          description: Académie
+        email_contact:
+          type: string
+          format: email
+          description: Email de contact du lycée
+        telephone:
+          type: string
+          description: Numéro de téléphone
+        logo_url:
+          type: string
+          format: uri
+          description: URL du logo du lycée
+        site_web:
+          type: string
+          format: uri
+          description: Site web du lycée
+        periode_de_stage:
+          type: string
+          description: Période de stage 

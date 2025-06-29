@@ -16,13 +16,16 @@ export async function createLyceenService(data: any) {
     }
   })
 
-  const resetToken = generateResetToken(data.email_personnel)
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password?email=${encodeURIComponent(data.email_personnel)}&token=${resetToken}`
+  // En mode test, on n'envoie pas d'email
+  if (process.env.NODE_ENV !== 'test') {
+    try {
+      const resetToken = generateResetToken(data.email_personnel)
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password?email=${encodeURIComponent(data.email_personnel)}&token=${resetToken}`
 
-  await transporter.sendMail({
-    to: data.email_personnel,
-    subject: 'Vos identifiants de connexion',
-    text: `
+      await transporter.sendMail({
+        to: data.email_personnel,
+        subject: 'Vos identifiants de connexion',
+        text: `
 Bonjour ${data.prenom},
 
 Voici vos identifiants pour accéder à la plateforme :
@@ -34,8 +37,13 @@ Pensez à modifier votre mot de passe dès la première connexion :
 ${resetLink}
 
 (Ce lien expire dans 1h)
-    `
-  })
+        `
+      })
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi de l\'email:', error)
+      // On ne fait pas échouer la création du lycéen si l'email échoue
+    }
+  }
 
   return lyceen
 }

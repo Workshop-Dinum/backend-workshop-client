@@ -1,0 +1,73 @@
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email de connexion
+          example: "contact@lycee.fr"
+        password:
+          type: string
+          description: Mot de passe
+          example: "motdepasse123"
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT pour l'authentification
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    ForgotPasswordRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email pour lequel demander la réinitialisation
+          example: "contact@lycee.fr"
+
+    ForgotPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message de confirmation
+          example: "Email de réinitialisation envoyé"
+
+    ResetPasswordRequest:
+      type: object
+      required:
+        - email
+        - token
+        - newPassword
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email de l'utilisateur
+          example: "contact@lycee.fr"
+        token:
+          type: string
+          description: Token de réinitialisation reçu par email
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        newPassword:
+          type: string
+          description: Nouveau mot de passe
+          example: "nouveaumdp123"
+
+    ResetPasswordResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message de confirmation
+          example: "Mot de passe mis à jour avec succès" 

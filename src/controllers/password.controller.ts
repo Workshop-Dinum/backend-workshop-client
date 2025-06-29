@@ -33,15 +33,17 @@ export async function forgotPassword(req: Request, res: Response) {
       return res.status(404).json({ error: 'Aucun compte trouvé avec cet email' })
     }
 
-    // Générer le token de reset
-    const resetToken = generateResetToken(email)
-    const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?email=${encodeURIComponent(email)}&token=${resetToken}`
+    // En mode test, on simule juste l'envoi
+    if (process.env.NODE_ENV !== 'test') {
+      // Générer le token de reset
+      const resetToken = generateResetToken(email)
+      const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?email=${encodeURIComponent(email)}&token=${resetToken}`
 
-    // Envoyer l'email
-    await transporter.sendMail({
-      to: email,
-      subject: 'Réinitialisation de votre mot de passe',
-      text: `
+      // Envoyer l'email
+      await transporter.sendMail({
+        to: email,
+        subject: 'Réinitialisation de votre mot de passe',
+        text: `
 Bonjour,
 
 Vous avez demandé la réinitialisation de votre mot de passe.
@@ -55,8 +57,9 @@ Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.
 
 Cordialement,
 L'équipe de la plateforme
-      `
-    })
+        `
+      })
+    }
 
     res.json({ message: 'Email de réinitialisation envoyé' })
   } catch (error) {
