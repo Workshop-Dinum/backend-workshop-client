@@ -5,6 +5,7 @@ import authRouter from '../routes/auth.routes'
 import lyceeRouter from '../routes/lycee.routes'
 import lyceenRouter from '../routes/lyceen.routes'
 import passwordRouter from '../routes/password.routes'
+import lyceenProfilRouter from '../routes/lyceen.profil.routes'
 import { errorHandler } from '../middlewares/error.middleware'
 import { swaggerMiddleware, swaggerSetup } from '../middlewares/swagger.middleware'
 
@@ -22,6 +23,7 @@ export function setupApp(app: Express) {
   app.use('/api/lycees', lyceeRouter)
   app.use('/api/lyceens', lyceenRouter)
   app.use('/api', passwordRouter)
+  app.use('/api/lyceen', lyceenProfilRouter)
 
   // Middleware global d'erreurs
   app.use(errorHandler)
