@@ -224,7 +224,8 @@ describe('E2E - Parcours Lycéen', () => {
         .post(`/api/lyceen/offres/99999/postuler`)
         .set('Authorization', `Bearer ${token}`)
         .send({ message: 'Test' })
-      expect(res.statusCode === 404 || res.statusCode === 500).toBe(true)
+      expect(res.statusCode).toBe(404)
+      expect(res.body.error).toBe('Offre introuvable')
     })
     it('❌ échoue si message trop long', async () => {
       const longMsg = 'a'.repeat(10000)

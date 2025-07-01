@@ -48,8 +48,15 @@ export async function postulerOffre(req: Request, res: Response) {
   const offreId = parseInt(req.params.id, 10)
   const { message } = req.body
 
-  const proposition = await postulerOffreService(lyceenId, offreId, message)
-  res.status(201).json(proposition)
+  try {
+    const proposition = await postulerOffreService(lyceenId, offreId, message)
+    res.status(201).json(proposition)
+  } catch (e: any) {
+    if (e.message === 'Offre introuvable') {
+      return res.status(404).json({ error: e.message })
+    }
+    throw e
+  }
 }
 
 // Sauvegarder une offre
