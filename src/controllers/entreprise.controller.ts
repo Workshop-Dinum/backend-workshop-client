@@ -36,6 +36,9 @@ export async function publierOffre(req: Request, res: Response) {
     res.status(201).json(offre)
   } catch (error: any) {
     console.error('[publierOffre]', error)
+    if (error.message && error.message.includes('filières sont invalides')) {
+      return res.status(500).json({ error: error.message })
+    }
     res.status(500).json({ error: 'Erreur lors de la publication de l’offre' })
   }
 }

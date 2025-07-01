@@ -75,6 +75,6 @@ export function validateLoginEntreprise(req: Request, res: Response, next: NextF
     entrepriseLoginSchema.parse(req.body)
     next()
   } catch {
-    res.status(400).json({ error: 'Validation échouée (login entreprise)' })
+    res.status(400).json({ error: 'Email et mot de passe requis' })
   }
 }

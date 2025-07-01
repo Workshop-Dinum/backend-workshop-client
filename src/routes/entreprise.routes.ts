@@ -36,12 +36,12 @@ router.get('/lycees/:id/eleves', authenticateEntreprise, getLyceensParLycee)
 router.post('/propositions', authenticateEntreprise, validateProposition, proposerOffre)
 
 // Liste de toutes les entreprises
-router.get('/entreprises', getAllEntreprises)
+router.get('/', getAllEntreprises)
 
 // Profil de l'entreprise connectée
-router.get('/entreprises/profil', authenticateEntreprise, getEntrepriseProfil)
+router.get('/profil', authenticateEntreprise, getEntrepriseProfil)
 
 // Login entreprise
-router.post('/entreprises/login', validateLoginEntreprise, loginEntreprise)
+router.post('/login', validateLoginEntreprise, loginEntreprise)
 
 export default router

@@ -132,6 +132,7 @@ model Proposition {
   offreId       Int
   message       String
   date_envoi    DateTime
+  @@unique([lyceenId, offreId])
 }
 
 model OffreSauvegardee {
