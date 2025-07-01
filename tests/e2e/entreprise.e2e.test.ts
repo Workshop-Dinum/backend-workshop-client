@@ -191,7 +191,7 @@ describe('Parcours Entreprise - E2E', () => {
     it('échoue si niveau inexistant', async () => {
       const filiere2 = await creerFiliere('Autre');
       const res = await creerOffre(token, { niveauId: 9999, filiereIds: [filiere2.id] });
-      expect(res.status).toBe(500);
+      expect(res.status).toBe(404);
     });
   });
 

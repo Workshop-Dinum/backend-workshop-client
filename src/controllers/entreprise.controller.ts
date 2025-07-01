@@ -18,12 +18,15 @@ export async function createEntreprise(req: Request, res: Response) {
     const entreprise = await createEntrepriseService(req.body)
     res.status(201).json(entreprise)
   } catch (error: any) {
-    console.error('[createEntreprise]', error)
-
     if (error.code === 'P2002') {
+      // Prisma unique constraint
       return res.status(400).json({ error: 'Email ou SIRET déjà utilisé' })
     }
-
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ error: 'Validation échouée', details: error.errors })
+    }
+    // Log minimal côté serveur
+    console.error('[createEntreprise] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de la création de l’entreprise' })
   }
 }
@@ -35,10 +38,16 @@ export async function publierOffre(req: Request, res: Response) {
     const offre = await createOffreService(entrepriseId, req.body)
     res.status(201).json(offre)
   } catch (error: any) {
-    console.error('[publierOffre]', error)
     if (error.message && error.message.includes('filières sont invalides')) {
       return res.status(500).json({ error: error.message })
     }
+    if (error.code === 'P2025') {
+      return res.status(404).json({ error: 'Niveau ou entreprise introuvable' })
+    }
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ error: 'Validation échouée', details: error.errors })
+    }
+    console.error('[publierOffre] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de la publication de l’offre' })
   }
 }
@@ -49,7 +58,7 @@ export async function getLycees(req: Request, res: Response) {
     const lycees = await getLyceesFiltrésService(req.query)
     res.json(lycees)
   } catch (error) {
-    console.error('[getLycees]', error)
+    console.error('[getLycees] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycées' })
   }
 }
@@ -60,7 +69,7 @@ export async function getLyceensParLycee(req: Request, res: Response) {
     const lyceens = await getLyceensParLyceeService(parseInt(req.params.id, 10))
     res.json(lyceens)
   } catch (error) {
-    console.error('[getLyceensParLycee]', error)
+    console.error('[getLyceensParLycee] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycéens' })
   }
 }
@@ -72,16 +81,16 @@ export async function proposerOffre(req: Request, res: Response) {
     const proposition = await proposerOffreALyceenService(entrepriseId, req.body)
     res.status(201).json(proposition)
   } catch (error: any) {
-    console.error('[proposerOffre]', error)
-
     if (error.message === 'Offre introuvable' || error.message === 'Lycéen introuvable') {
       return res.status(404).json({ error: error.message })
     }
-
     if (error.code === 'P2002') {
       return res.status(400).json({ error: 'Une proposition existe déjà pour cette offre et ce lycéen' })
     }
-
+    if (error.name === 'ZodError') {
+      return res.status(400).json({ error: 'Validation échouée', details: error.errors })
+    }
+    console.error('[proposerOffre] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de l’envoi de la proposition' })
   }
 }
@@ -91,6 +100,7 @@ export async function getAllEntreprises(req: Request, res: Response) {
     const entreprises = await getAllEntreprisesService()
     res.json(entreprises)
   } catch (error) {
+    console.error('[getAllEntreprises] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des entreprises' })
   }
 }
@@ -102,6 +112,7 @@ export async function getEntrepriseProfil(req: Request, res: Response) {
     if (!entreprise) return res.status(404).json({ error: 'Entreprise non trouvée' })
     res.json(entreprise)
   } catch (error) {
+    console.error('[getEntrepriseProfil] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement du profil' })
   }
 }
@@ -111,19 +122,21 @@ export async function loginEntreprise(req: Request, res: Response) {
   if (!email || !mot_de_passe) {
     return res.status(400).json({ error: 'Email et mot de passe requis' })
   }
-
-  const entreprise = await prisma.entreprise.findUnique({
-    where: { contact_email: email }
-  })
-  if (!entreprise) {
-    return res.status(401).json({ error: 'Identifiants invalides' })
+  try {
+    const entreprise = await prisma.entreprise.findUnique({
+      where: { contact_email: email }
+    })
+    if (!entreprise) {
+      return res.status(401).json({ error: 'Identifiants invalides' })
+    }
+    const valid = await bcrypt.compare(mot_de_passe, entreprise.mot_de_passe_hash)
+    if (!valid) {
+      return res.status(401).json({ error: 'Identifiants invalides' })
+    }
+    const token = jwt.sign({ id: entreprise.id }, process.env.JWT_SECRET!, { expiresIn: '7d' })
+    res.json({ token })
+  } catch (error) {
+    console.error('[loginEntreprise] Erreur serveur')
+    res.status(500).json({ error: 'Erreur lors de la connexion' })
   }
-
-  const valid = await bcrypt.compare(mot_de_passe, entreprise.mot_de_passe_hash)
-  if (!valid) {
-    return res.status(401).json({ error: 'Identifiants invalides' })
-  }
-
-  const token = jwt.sign({ id: entreprise.id }, process.env.JWT_SECRET!, { expiresIn: '7d' })
-  res.json({ token })
 }
