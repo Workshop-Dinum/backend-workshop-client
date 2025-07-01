@@ -48,7 +48,8 @@ describe('E2E - Lycées', () => {
       await request(app).post('/api/lycees').send(validLycée)
       // Utiliser exactement les mêmes données pour la deuxième tentative
       const res = await request(app).post('/api/lycees').send(validLycée)
-      expect(res.statusCode).toBe(500)
+      expect(res.statusCode).toBe(400)
+      expect(res.body.error).toBe('Cet email est déjà utilisé.')
     })
 
     it('❌ échoue si email invalide', async () => {

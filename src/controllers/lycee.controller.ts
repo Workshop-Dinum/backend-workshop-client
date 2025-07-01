@@ -1,11 +1,19 @@
 import { Request, Response } from 'express'
 import { createLyceeService, getLyceesService } from '../services/lycee.service'
 import prisma from '../config/db'
+import { Prisma } from '@prisma/client'
 
 // Crée un lycée à partir des données envoyées
 export async function createLycee(req: Request, res: Response) {
-  const lycee = await createLyceeService(req.body)
-  res.status(201).json(lycee)
+  try {
+    const lycee = await createLyceeService(req.body)
+    res.status(201).json(lycee)
+  } catch (e: any) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
+      return res.status(400).json({ error: 'Cet email est déjà utilisé.' })
+    }
+    throw e
+  }
 }
 
 // Récupère la liste des lycées (avec filtres éventuels)
