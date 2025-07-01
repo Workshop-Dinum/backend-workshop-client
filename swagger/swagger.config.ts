@@ -6,7 +6,7 @@ const options: swaggerJsdoc.Options = {
     info: {
       title: 'API Backend Workshop - Dinum',
       version: '1.0.0',
-      description: 'API REST pour la gestion des lycées et lycéens avec authentification et réinitialisation de mot de passe',
+      description: 'API REST permettant de créer une plateforme de mise en relation entre entreprises et lycées professionnels, afin de faciliter le recrutement des lycéens professionnels en stage.',
       contact: {
         name: 'Équipe Backend Workshop',
         email: 'amine.laihem@my-digital-school.org'
