@@ -1,0 +1,229 @@
+Entreprise:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    siret:
+      type: string
+      example: '123456789'
+    nom:
+      type: string
+      example: 'Test SARL'
+    rue:
+      type: string
+      example: '1 rue du test'
+    code_postal:
+      type: string
+      example: '75000'
+    ville:
+      type: string
+      example: 'Paris'
+    departement:
+      type: string
+      example: '75'
+    region:
+      type: string
+      example: 'IDF'
+    contact_nom:
+      type: string
+      example: 'Jean Test'
+    contact_email:
+      type: string
+      example: 'test@entreprise.com'
+    contact_telephone:
+      type: string
+      example: '0102030405'
+    secteurId:
+      type: integer
+      example: 1
+
+EntrepriseCreation:
+  type: object
+  required:
+    - siret
+    - nom
+    - rue
+    - code_postal
+    - ville
+    - departement
+    - region
+    - contact_nom
+    - contact_email
+    - contact_telephone
+    - secteurId
+    - mot_de_passe
+  properties:
+    siret:
+      type: string
+      example: '123456789'
+    nom:
+      type: string
+      example: 'Test SARL'
+    rue:
+      type: string
+      example: '1 rue du test'
+    code_postal:
+      type: string
+      example: '75000'
+    ville:
+      type: string
+      example: 'Paris'
+    departement:
+      type: string
+      example: '75'
+    region:
+      type: string
+      example: 'IDF'
+    contact_nom:
+      type: string
+      example: 'Jean Test'
+    contact_email:
+      type: string
+      example: 'test@entreprise.com'
+    contact_telephone:
+      type: string
+      example: '0102030405'
+    secteurId:
+      type: integer
+      example: 1
+    mot_de_passe:
+      type: string
+      example: 'azerty1'
+
+Offre:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    titre:
+      type: string
+      example: 'Stage Dev'
+    description:
+      type: string
+      example: 'Développement web'
+    duree:
+      type: string
+      example: '2 mois'
+    lieu:
+      type: string
+      example: 'Paris'
+    periode:
+      type: string
+      example: '2024'
+    niveauId:
+      type: integer
+      example: 1
+    filiereIds:
+      type: array
+      items:
+        type: integer
+      example: [1]
+    cv_requis:
+      type: boolean
+      example: true
+    message_requis:
+      type: boolean
+      example: false
+    date_limite:
+      type: string
+      format: date
+      example: '2025-01-01'
+    entrepriseId:
+      type: integer
+      example: 1
+
+OffreCreation:
+  type: object
+  required:
+    - titre
+    - description
+    - duree
+    - lieu
+    - periode
+    - niveauId
+    - filiereIds
+    - cv_requis
+    - message_requis
+    - date_limite
+  properties:
+    titre:
+      type: string
+      example: 'Stage Dev'
+    description:
+      type: string
+      example: 'Développement web'
+    duree:
+      type: string
+      example: '2 mois'
+    lieu:
+      type: string
+      example: 'Paris'
+    periode:
+      type: string
+      example: '2024'
+    niveauId:
+      type: integer
+      example: 1
+    filiereIds:
+      type: array
+      items:
+        type: integer
+      example: [1]
+    cv_requis:
+      type: boolean
+      example: true
+    message_requis:
+      type: boolean
+      example: false
+    date_limite:
+      type: string
+      format: date
+      example: '2025-01-01'
+
+Proposition:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 1
+    entrepriseId:
+      type: integer
+      example: 1
+    lyceenId:
+      type: integer
+      example: 1
+    offreId:
+      type: integer
+      example: 1
+    message:
+      type: string
+      example: 'Motivé !'
+    date_envoi:
+      type: string
+      format: date-time
+      example: '2024-07-01T12:00:00Z'
+
+PropositionCreation:
+  type: object
+  required:
+    - lyceenId
+    - offreId
+  properties:
+    lyceenId:
+      type: integer
+      example: 1
+    offreId:
+      type: integer
+      example: 1
+    message:
+      type: string
+      example: 'Motivé !'
+
+Error:
+  type: object
+  properties:
+    error:
+      type: string
+      example: "Message d'erreur" 
