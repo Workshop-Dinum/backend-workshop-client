@@ -31,20 +31,20 @@ const router = express.Router()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '../../swagger/schemas/entreprise.yaml#/EntrepriseCreation'
+ *             $ref: '#/components/schemas/EntrepriseCreation'
  *     responses:
  *       201:
  *         description: Entreprise créée
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Entreprise'
+ *               $ref: '#/components/schemas/Entreprise'
  *       400:
  *         description: Erreur de validation ou doublon
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *
  *   get:
  *     tags: [Entreprise]
@@ -57,7 +57,7 @@ const router = express.Router()
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '../../swagger/schemas/entreprise.yaml#/Entreprise'
+ *                 $ref: '#/components/schemas/Entreprise'
  */
 // Créer une entreprise (pas besoin de token)
 router.post('/', validateCreationEntreprise, createEntreprise)
@@ -99,13 +99,13 @@ router.get('/', getAllEntreprises)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       401:
  *         description: Identifiants invalides
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.post('/login', validateLoginEntreprise, loginEntreprise)
 
@@ -123,19 +123,19 @@ router.post('/login', validateLoginEntreprise, loginEntreprise)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Entreprise'
+ *               $ref: '#/components/schemas/Entreprise'
  *       401:
  *         description: Non authentifié
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       404:
  *         description: Entreprise non trouvée
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/profil', authenticateEntreprise, getEntrepriseProfil)
 
@@ -152,32 +152,32 @@ router.get('/profil', authenticateEntreprise, getEntrepriseProfil)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '../../swagger/schemas/entreprise.yaml#/OffreCreation'
+ *             $ref: '#/components/schemas/OffreCreation'
  *     responses:
  *       201:
  *         description: Offre créée
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Offre'
+ *               $ref: '#/components/schemas/Offre'
  *       400:
  *         description: Erreur de validation
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       401:
  *         description: Non authentifié
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       500:
  *         description: Erreur serveur
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.post('/offres', authenticateEntreprise, validateCreationOffre, publierOffre)
 
@@ -194,32 +194,32 @@ router.post('/offres', authenticateEntreprise, validateCreationOffre, publierOff
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '../../swagger/schemas/entreprise.yaml#/PropositionCreation'
+ *             $ref: '#/components/schemas/PropositionCreation'
  *     responses:
  *       201:
  *         description: Proposition créée
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Proposition'
+ *               $ref: '#/components/schemas/Proposition'
  *       400:
  *         description: Erreur de validation ou doublon
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       401:
  *         description: Non authentifié
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  *       404:
  *         description: Offre ou lycéen introuvable
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.post('/propositions', authenticateEntreprise, validateProposition, proposerOffre)
 
@@ -250,13 +250,13 @@ router.post('/propositions', authenticateEntreprise, validateProposition, propos
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '../../swagger/schemas/lycee.yaml#/Lycee'
+ *                 $ref: '#/components/schemas/Lycee'
  *       401:
  *         description: Non authentifié
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/lycees', authenticateEntreprise, getLycees)
 
@@ -283,13 +283,13 @@ router.get('/lycees', authenticateEntreprise, getLycees)
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '../../swagger/schemas/lyceen.yaml#/Lyceen'
+ *                 $ref: '#/components/schemas/Lyceen'
  *       401:
  *         description: Non authentifié
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '../../swagger/schemas/entreprise.yaml#/Error'
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/lycees/:id/eleves', authenticateEntreprise, getLyceensParLycee)
 
