@@ -4,7 +4,7 @@ const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Backend Workshop - Gestion des Lycées et Lycéens',
+      title: 'API Backend Workshop - Dinum',
       version: '1.0.0',
       description: 'API REST pour la gestion des lycées et lycéens avec authentification et réinitialisation de mot de passe',
       contact: {
