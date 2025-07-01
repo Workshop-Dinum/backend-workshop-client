@@ -64,3 +64,17 @@ export function validateProposition(req: Request, res: Response, next: NextFunct
     res.status(400).json({ error: 'Validation échouée (proposition lycéen)' })
   }
 }
+
+export const entrepriseLoginSchema = z.object({
+  email: z.string().email(),
+  mot_de_passe: z.string().min(6)
+})
+
+export function validateLoginEntreprise(req: Request, res: Response, next: NextFunction) {
+  try {
+    entrepriseLoginSchema.parse(req.body)
+    next()
+  } catch {
+    res.status(400).json({ error: 'Validation échouée (login entreprise)' })
+  }
+}
