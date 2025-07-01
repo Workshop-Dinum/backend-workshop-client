@@ -86,7 +86,7 @@ model Entreprise {
   departement       String
   region            String
   contact_nom       String
-  contact_email     String
+  contact_email     String  @unique
   contact_telephone String
   secteur           SecteurActivite @relation(fields: [secteurId], references: [id])
   secteurId         Int

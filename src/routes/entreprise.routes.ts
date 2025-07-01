@@ -6,14 +6,16 @@ import {
   getLyceensParLycee,
   proposerOffre,
   getAllEntreprises,
-  getEntrepriseProfil
+  getEntrepriseProfil,
+  loginEntreprise
 } from '../controllers/entreprise.controller'
 
 import { authenticateEntreprise } from '../middlewares/entreprise.middleware'
 import {
   validateCreationEntreprise,
   validateCreationOffre,
-  validateProposition
+  validateProposition,
+  validateLoginEntreprise
 } from '../validations/entreprise.validation'
 
 const router = express.Router()
@@ -38,5 +40,8 @@ router.get('/entreprises', getAllEntreprises)
 
 // Profil de l'entreprise connectée
 router.get('/entreprises/profil', authenticateEntreprise, getEntrepriseProfil)
+
+// Login entreprise
+router.post('/entreprises/login', validateLoginEntreprise, loginEntreprise)
 
 export default router

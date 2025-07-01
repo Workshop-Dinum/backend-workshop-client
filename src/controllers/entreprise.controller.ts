@@ -8,6 +8,9 @@ import {
   getEntrepriseByIdService
 } from '../services/entreprise.service'
 import { createOffreService } from '../services/offre.service'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import prisma from '../config/db'
 
 // Créer un compte entreprise
 export async function createEntreprise(req: Request, res: Response) {
@@ -98,4 +101,26 @@ export async function getEntrepriseProfil(req: Request, res: Response) {
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors du chargement du profil' })
   }
+}
+
+export async function loginEntreprise(req: Request, res: Response) {
+  const { email, mot_de_passe } = req.body
+  if (!email || !mot_de_passe) {
+    return res.status(400).json({ error: 'Email et mot de passe requis' })
+  }
+
+  const entreprise = await prisma.entreprise.findUnique({
+    where: { contact_email: email }
+  })
+  if (!entreprise) {
+    return res.status(401).json({ error: 'Identifiants invalides' })
+  }
+
+  const valid = await bcrypt.compare(mot_de_passe, entreprise.mot_de_passe_hash)
+  if (!valid) {
+    return res.status(401).json({ error: 'Identifiants invalides' })
+  }
+
+  const token = jwt.sign({ id: entreprise.id }, process.env.JWT_SECRET!, { expiresIn: '7d' })
+  res.json({ token })
 }
