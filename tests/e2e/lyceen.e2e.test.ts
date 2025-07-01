@@ -385,7 +385,8 @@ describe('E2E - Lycéens', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(invalidLyceen)
 
-      expect(res.statusCode).toBe(500)
+      expect(res.statusCode).toBe(400)
+      expect(res.body.error).toBe('Lycée, filière ou niveau inexistant.')
     })
 
     it('❌ échoue si filiereId inexistant', async () => {
@@ -400,7 +401,8 @@ describe('E2E - Lycéens', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(invalidLyceen)
 
-      expect(res.statusCode).toBe(500)
+      expect(res.statusCode).toBe(400)
+      expect(res.body.error).toBe('Lycée, filière ou niveau inexistant.')
     })
 
     it('❌ échoue si niveauId inexistant', async () => {
@@ -415,7 +417,8 @@ describe('E2E - Lycéens', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(invalidLyceen)
 
-      expect(res.statusCode).toBe(500)
+      expect(res.statusCode).toBe(400)
+      expect(res.body.error).toBe('Lycée, filière ou niveau inexistant.')
     })
 
     it('✅ permet de créer plusieurs lycéens avec le même email institutionnel (pas de contrainte d\'unicité)', async () => {
