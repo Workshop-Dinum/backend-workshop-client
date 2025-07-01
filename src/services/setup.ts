@@ -9,7 +9,7 @@ import lyceenProfilRouter from '../routes/lyceen.profil.routes'
 import lyceenAuthRouter from '../routes/lyceen.auth.routes'
 import { errorHandler } from '../middlewares/error.middleware'
 import { swaggerMiddleware, swaggerSetup } from '../middlewares/swagger.middleware'
-
+import entrepriseRouter from '../routes/entreprise.routes'
 // Configuration globale de l'application
 export function setupApp(app: Express) {
   app.use(cors()) // Autorise les requêtes cross-origin
@@ -26,6 +26,7 @@ export function setupApp(app: Express) {
   app.use('/api', passwordRouter)
   app.use('/api/lyceen', lyceenProfilRouter)
   app.use('/api/lyceen', lyceenAuthRouter)
+  app.use('/api/entreprises', entrepriseRouter)
 
   // Middleware global d'erreurs
   app.use(errorHandler)
