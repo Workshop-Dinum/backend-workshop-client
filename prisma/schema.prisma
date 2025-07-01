@@ -78,7 +78,7 @@ model SecteurActivite {
 
 model Entreprise {
   id                Int              @id @default(autoincrement())
-  siret             String
+  siret             String  @unique
   nom               String
   rue               String
   code_postal       String
