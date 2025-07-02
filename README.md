@@ -2,6 +2,8 @@
 
 Ce projet est une API RESTful construite avec **Node.js**, **Express**, **Prisma**, **PostgreSQL** et **TypeScript**, permettant de connecter des **lycées professionnels**, **lycéens** et **entreprises** pour faciliter le **recrutement de stagiaires**.
 
+> **ℹ️ Le port de l'API dépend de la variable `PORT` dans votre fichier `.env`. Par défaut : 3000.**
+
 ---
 
 ## 🚀 Fonctionnalités
@@ -68,7 +70,7 @@ Ce projet est une API RESTful construite avec **Node.js**, **Express**, **Prisma
    ```bash
    docker-compose up --build
    ```
-   L'API sera disponible sur [http://localhost:3000](http://localhost:3000)
+   L'API sera disponible sur [http://localhost:PORT](http://localhost:PORT) (remplacez PORT par la valeur de la variable `PORT` dans votre `.env`, par défaut 3000)
 
 2. **Arrêter l'environnement**
    ```bash
@@ -83,6 +85,8 @@ Ce projet est une API RESTful construite avec **Node.js**, **Express**, **Prisma
    ```bash
    npm run dev
    ```
+
+> **ℹ️ Le port utilisé dépend de la variable `PORT` dans votre `.env`.**
 
 ## 🧪 Tests
 
@@ -126,7 +130,7 @@ Pour garantir l'isolation entre le développement et les tests, une base de donn
 ## 📑 Documentation API
 
 - **Swagger UI** :
-  - Développement : [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+  - Développement : [http://localhost:PORT/api-docs](http://localhost:PORT/api-docs) (remplacez PORT par la valeur de la variable `PORT`)
   - Production : `https://backend-workshop-client.onrender.com/api-docs`
 - Voir `swagger/README.md` pour plus de détails sur les endpoints et l'utilisation de la documentation interactive.
 
