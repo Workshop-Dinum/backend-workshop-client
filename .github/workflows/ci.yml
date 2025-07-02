@@ -49,4 +49,4 @@ jobs:
         run: npx eslint src --ext .ts
 
       - name: Run tests
-        run: npm test
+        run: npx jest --runInBand
