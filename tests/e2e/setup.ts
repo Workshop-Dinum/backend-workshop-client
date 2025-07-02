@@ -22,8 +22,8 @@ beforeEach(async () => {
   await prisma.offreFiliere.deleteMany();
   await prisma.lyceeFiliere.deleteMany();
   await prisma.lyceen.deleteMany();
-  await prisma.lycee.deleteMany();
   await prisma.offre.deleteMany();
+  await prisma.lycee.deleteMany();
   await prisma.entreprise.deleteMany();
 });
 
@@ -34,8 +34,8 @@ afterEach(async () => {
   await prisma.offreFiliere.deleteMany();
   await prisma.lyceeFiliere.deleteMany();
   await prisma.lyceen.deleteMany();
-  await prisma.lycee.deleteMany();
   await prisma.offre.deleteMany();
+  await prisma.lycee.deleteMany();
   await prisma.entreprise.deleteMany();
 });
 
