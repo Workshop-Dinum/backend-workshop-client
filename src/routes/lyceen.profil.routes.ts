@@ -11,6 +11,7 @@ import {
 
 import { authenticateLyceen } from '../middlewares/lyceen.middleware'
 import { validateUpdateProfil, validatePostuler } from '../validations/lyceen.profil.validation'
+import { cacheMiddleware } from '../middlewares/cacheMiddleware'
 
 const router = express.Router()
 
@@ -118,7 +119,7 @@ router.put('/profil', authenticateLyceen, validateUpdateProfil, updateLyceenProf
  *             schema:
  *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
  */
-router.get('/offres', authenticateLyceen, getOffres)
+router.get('/offres', authenticateLyceen, cacheMiddleware, getOffres)
 
 /**
  * @swagger
@@ -301,6 +302,6 @@ router.delete('/offres/:id/sauvegarder', authenticateLyceen, deleteSauvegardeOff
  *             schema:
  *               $ref: '../swagger/schemas/lyceen.yaml#/components/schemas/Error'
  */
-router.get('/offres/sauvegardees', authenticateLyceen, getOffresSauvegardees)
+router.get('/offres/sauvegardees', authenticateLyceen, cacheMiddleware, getOffresSauvegardees)
 
 export default router

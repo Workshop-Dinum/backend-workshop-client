@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import prisma from '../config/db'
 import { updateLyceenProfilService, getOffresPourLyceenService, postulerOffreService, saveOffrePourLyceenService, deleteOffreSauvegardeePourLyceenService, getOffresSauvegardeesPourLyceenService } from '../services/lyceen.profil.service'
+import cache from '../utils/cache'
 
 // Récupérer les infos du lycéen connecté
 export async function getLyceenProfil(req: Request, res: Response) {
@@ -65,6 +66,8 @@ export async function saveOffre(req: Request, res: Response) {
   const offreId = parseInt(req.params.id, 10)
   try {
     const sauvegarde = await saveOffrePourLyceenService(lyceenId, offreId)
+    // Invalider le cache pour cet utilisateur
+    await cache.del(`/api/lyceen/offres/sauvegardees/${lyceenId}`)
     res.status(201).json(sauvegarde)
   } catch (e: any) {
     if (e.message === 'Offre introuvable') return res.status(404).json({ error: e.message })
@@ -79,6 +82,8 @@ export async function deleteSauvegardeOffre(req: Request, res: Response) {
   const offreId = parseInt(req.params.id, 10)
   try {
     await deleteOffreSauvegardeePourLyceenService(lyceenId, offreId)
+    // Invalider le cache pour cet utilisateur
+    await cache.del(`/api/lyceen/offres/sauvegardees/${lyceenId}`)
     res.json({ success: true })
   } catch (e: any) {
     if (e.message === 'Aucune sauvegarde trouvée') return res.status(404).json({ error: e.message })

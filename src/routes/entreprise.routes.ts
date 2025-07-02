@@ -17,6 +17,7 @@ import {
   validateProposition,
   validateLoginEntreprise
 } from '../validations/entreprise.validation'
+import { cacheMiddleware } from '../middlewares/cacheMiddleware'
 
 const router = express.Router()
 
@@ -63,7 +64,7 @@ const router = express.Router()
 router.post('/', validateCreationEntreprise, createEntreprise)
 
 // Liste de toutes les entreprises
-router.get('/', getAllEntreprises)
+router.get('/', cacheMiddleware, getAllEntreprises)
 
 /**
  * @swagger
@@ -258,7 +259,7 @@ router.post('/propositions', authenticateEntreprise, validateProposition, propos
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/lycees', authenticateEntreprise, getLycees)
+router.get('/lycees', authenticateEntreprise, cacheMiddleware, getLycees)
 
 /**
  * @swagger
@@ -291,6 +292,6 @@ router.get('/lycees', authenticateEntreprise, getLycees)
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/lycees/:id/eleves', authenticateEntreprise, getLyceensParLycee)
+router.get('/lycees/:id/eleves', authenticateEntreprise, cacheMiddleware, getLyceensParLycee)
 
 export default router

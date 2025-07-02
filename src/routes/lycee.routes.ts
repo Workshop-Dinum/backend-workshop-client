@@ -2,6 +2,7 @@ import express from 'express'
 import { createLycee, getLycees, getLyceeProfil } from '../controllers/lycee.controller'
 import { validateLycee } from '../validations/lycee.validation'
 import { authenticateToken } from '../middlewares/auth.middleware'
+import { cacheMiddleware } from '../middlewares/cacheMiddleware'
 
 const router = express.Router()
 
@@ -63,7 +64,7 @@ router.post('/', validateLycee, createLycee)
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/', getLycees)
+router.get('/', cacheMiddleware, getLycees)
 
 /**
  * @swagger
