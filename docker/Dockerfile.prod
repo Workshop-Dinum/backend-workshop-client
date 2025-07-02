@@ -25,6 +25,8 @@ WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/prisma ./prisma
+COPY ./src ./src
+COPY ./swagger ./swagger
 
 # Réinstalle uniquement les dépendances de production
 RUN npm ci --only=production
