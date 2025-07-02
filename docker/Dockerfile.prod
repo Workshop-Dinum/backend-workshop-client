@@ -13,7 +13,7 @@ COPY . .
 # Génère le client Prisma (nécessaire pour Prisma Client)
 RUN npx prisma generate
 
-# Compile TypeScript
+# Compile TypeScript (inclut le seed)
 RUN npm run build
 
 # Étape 2 : Image finale minimale pour la prod
