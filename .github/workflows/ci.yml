@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/workshop_test" >> $GITHUB_ENV
           echo "JWT_SECRET=supersecret" >> $GITHUB_ENV
-          echo "FRONTEND_URL=http://localhost:3001" >> $GITHUB_ENV
+          echo "FRONTEND_URL=https://workshop-dinum-frontend-workshop-cl.vercel.app/" >> $GITHUB_ENV
 
       - name: Prisma migrate
         run: npx prisma migrate deploy

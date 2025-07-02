@@ -32,13 +32,12 @@ describe('E2E - Authentification', () => {
   let createdLycee: any
 
   beforeEach(async () => {
-    // S'assurer que la base est vide
-    await prisma.lycee.deleteMany()
-    
-    validLycee = generateValidLycee()
-    // Créer un lycée pour les tests de connexion
-    const res = await request(app).post('/api/lycees').send(validLycee)
-    createdLycee = res.body
+    // Nettoie tous les lycées
+    await prisma.lycee.deleteMany();
+    // Puis recrée le lycée pour chaque test
+    validLycee = generateValidLycee();
+    const res = await request(app).post('/api/lycees').send(validLycee);
+    createdLycee = res.body;
   })
 
   // === Connexion (Login) ===

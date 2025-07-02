@@ -66,14 +66,16 @@ describe('E2E - Lycées', () => {
       await prisma.lycee.deleteMany()
       
       // Créer exactement 2 lycées
-      await request(app).post('/api/lycees').send(generateValidLycee())
-      await request(app).post('/api/lycees').send(
+      const res1 = await request(app).post('/api/lycees').send(generateValidLycee())
+      expect(res1.statusCode).toBe(201)
+      const res2 = await request(app).post('/api/lycees').send(
         generateValidLycee({
           ville: 'Lyon',
           region: 'Auvergne-Rhône-Alpes',
           departement: '69'
         })
       )
+      expect(res2.statusCode).toBe(201)
     })
 
     it('✅ retourne tous les lycées', async () => {
