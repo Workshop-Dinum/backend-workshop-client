@@ -48,5 +48,5 @@ jobs:
       - name: Lint
         run: npx eslint src --ext .ts
 
-      - name: Run auth E2E tests only
-        run: npm run test:e2e auth.e2e
+      - name: Run tests
+        run: npm test
