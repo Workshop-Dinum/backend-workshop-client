@@ -42,6 +42,9 @@ jobs:
       - name: Prisma migrate
         run: npx prisma migrate deploy
 
+      - name: Prisma seed
+        run: npx prisma db seed
+
       - name: Lint
         run: npx eslint src --ext .ts
 
