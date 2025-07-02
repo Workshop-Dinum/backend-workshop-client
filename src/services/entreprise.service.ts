@@ -3,8 +3,8 @@ import bcrypt from 'bcryptjs'
 
 // Crée une entreprise avec mot de passe hashé
 export async function createEntrepriseService(data: any) {
-  const hashedPassword = await bcrypt.hash(data.mot_de_passe, 10)
   const { mot_de_passe, ...rest } = data
+  const hashedPassword = await bcrypt.hash(mot_de_passe, 10)
 
   return prisma.entreprise.create({
     data: {

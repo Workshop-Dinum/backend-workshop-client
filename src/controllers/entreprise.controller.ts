@@ -19,13 +19,11 @@ export async function createEntreprise(req: Request, res: Response) {
     res.status(201).json(entreprise)
   } catch (error: any) {
     if (error.code === 'P2002') {
-      // Prisma unique constraint
       return res.status(400).json({ error: 'Email ou SIRET déjà utilisé' })
     }
     if (error.name === 'ZodError') {
       return res.status(400).json({ error: 'Validation échouée', details: error.errors })
     }
-    // Log minimal côté serveur
     console.error('[createEntreprise] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de la création de l’entreprise' })
   }
@@ -52,12 +50,12 @@ export async function publierOffre(req: Request, res: Response) {
   }
 }
 
-// Récupérer les lycées filtrés (par région, département...)
+// Récupérer les lycées filtrés
 export async function getLycees(req: Request, res: Response) {
   try {
     const lycees = await getLyceesFiltrésService(req.query)
     res.json(lycees)
-  } catch (error) {
+  } catch (_) {
     console.error('[getLycees] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycées' })
   }
@@ -68,7 +66,7 @@ export async function getLyceensParLycee(req: Request, res: Response) {
   try {
     const lyceens = await getLyceensParLyceeService(parseInt(req.params.id, 10))
     res.json(lyceens)
-  } catch (error) {
+  } catch (_) {
     console.error('[getLyceensParLycee] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycéens' })
   }
@@ -95,28 +93,31 @@ export async function proposerOffre(req: Request, res: Response) {
   }
 }
 
+// Récupérer toutes les entreprises
 export async function getAllEntreprises(req: Request, res: Response) {
   try {
     const entreprises = await getAllEntreprisesService()
     res.json(entreprises)
-  } catch (error) {
+  } catch (_) {
     console.error('[getAllEntreprises] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des entreprises' })
   }
 }
 
+// Récupérer le profil de l’entreprise connectée
 export async function getEntrepriseProfil(req: Request, res: Response) {
   try {
     const entrepriseId = (req as any).user.id
     const entreprise = await getEntrepriseByIdService(entrepriseId)
     if (!entreprise) return res.status(404).json({ error: 'Entreprise non trouvée' })
     res.json(entreprise)
-  } catch (error) {
+  } catch (_) {
     console.error('[getEntrepriseProfil] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement du profil' })
   }
 }
 
+// Connexion entreprise
 export async function loginEntreprise(req: Request, res: Response) {
   const { email, mot_de_passe } = req.body
   if (!email || !mot_de_passe) {
@@ -135,7 +136,7 @@ export async function loginEntreprise(req: Request, res: Response) {
     }
     const token = jwt.sign({ id: entreprise.id }, process.env.JWT_SECRET!, { expiresIn: '7d' })
     res.json({ token })
-  } catch (error) {
+  } catch (_) {
     console.error('[loginEntreprise] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de la connexion' })
   }

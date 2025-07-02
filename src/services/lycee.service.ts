@@ -3,9 +3,8 @@ import bcrypt from 'bcryptjs'
 
 // Création d’un lycée avec mot de passe hashé
 export async function createLyceeService(data: any) {
-  const hashedPassword = await bcrypt.hash(data.mot_de_passe, 10);
-
   const { mot_de_passe, ...rest } = data;
+  const hashedPassword = await bcrypt.hash(mot_de_passe, 10);  
 
   return prisma.lycee.create({
     data: {
