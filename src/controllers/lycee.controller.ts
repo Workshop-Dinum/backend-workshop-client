@@ -25,6 +25,7 @@ export async function getLycees(req: Request, res: Response) {
 // Récupère le profil du lycée connecté (via token JWT)
 export async function getLyceeProfil(req: Request, res: Response) {
   const user = (req as any).user
+  console.log('[getLyceeProfil] ID lycée dans le token:', user?.id)
 
   const lycee = await prisma.lycee.findUnique({
     where: { id: user.id },
@@ -44,6 +45,7 @@ export async function getLyceeProfil(req: Request, res: Response) {
       periode_de_stage: true
     }
   })
+  console.log('[getLyceeProfil] Lycée trouvé:', lycee)
 
   if (!lycee) return res.status(404).json({ error: 'Lycée non trouvé' })
 

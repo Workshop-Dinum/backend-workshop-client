@@ -234,6 +234,12 @@ describe('E2E - Authentification', () => {
       expect(loginRes.statusCode).toBe(200)
       expect(loginRes.body).toHaveProperty('token')
 
+      // Log du token JWT pour debug
+      console.log('[TEST] Token JWT reçu:', loginRes.body.token)
+      // Décodage du token pour vérifier l'ID
+      const decoded = require('jsonwebtoken').decode(loginRes.body.token)
+      console.log('[TEST] Payload du token:', decoded)
+
       // Utiliser le token pour accéder au profil
       const profileRes = await request(app)
         .get('/api/lycees/profil')
