@@ -55,7 +55,7 @@ export async function getLycees(req: Request, res: Response) {
   try {
     const lycees = await getLyceesFiltrésService(req.query)
     res.json(lycees)
-  } catch (_) {
+  } catch {
     console.error('[getLycees] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycées' })
   }
@@ -66,7 +66,7 @@ export async function getLyceensParLycee(req: Request, res: Response) {
   try {
     const lyceens = await getLyceensParLyceeService(parseInt(req.params.id, 10))
     res.json(lyceens)
-  } catch (_) {
+  } catch  {
     console.error('[getLyceensParLycee] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des lycéens' })
   }
@@ -98,7 +98,7 @@ export async function getAllEntreprises(req: Request, res: Response) {
   try {
     const entreprises = await getAllEntreprisesService()
     res.json(entreprises)
-  } catch (_) {
+  } catch {
     console.error('[getAllEntreprises] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement des entreprises' })
   }
@@ -111,7 +111,7 @@ export async function getEntrepriseProfil(req: Request, res: Response) {
     const entreprise = await getEntrepriseByIdService(entrepriseId)
     if (!entreprise) return res.status(404).json({ error: 'Entreprise non trouvée' })
     res.json(entreprise)
-  } catch (_) {
+  } catch {
     console.error('[getEntrepriseProfil] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors du chargement du profil' })
   }
@@ -136,7 +136,7 @@ export async function loginEntreprise(req: Request, res: Response) {
     }
     const token = jwt.sign({ id: entreprise.id }, process.env.JWT_SECRET!, { expiresIn: '7d' })
     res.json({ token })
-  } catch (_) {
+  } catch {
     console.error('[loginEntreprise] Erreur serveur')
     res.status(500).json({ error: 'Erreur lors de la connexion' })
   }

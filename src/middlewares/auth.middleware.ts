@@ -28,7 +28,7 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     // On injecte l’ID du lycée dans la requête (standard JWT payload)
     ;(req as any).user = { id: lycee.id }
     next()
-  } catch (_) {
+  } catch {
     return res.sendStatus(403)
   }
 }

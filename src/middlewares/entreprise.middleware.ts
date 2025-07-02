@@ -22,7 +22,7 @@ export async function authenticateEntreprise(req: Request, res: Response, next: 
     // On injecte l’ID dans la requête
     ;(req as any).user = { id: entreprise.id }
     next()
-  } catch (_) {
+  } catch {
     return res.sendStatus(403)
   }
 }

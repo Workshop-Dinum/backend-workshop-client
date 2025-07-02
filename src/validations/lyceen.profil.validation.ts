@@ -11,7 +11,7 @@ export function validateUpdateProfil(req: Request, res: Response, next: NextFunc
   try {
     updateProfilSchema.parse(req.body)
     next()
-  } catch (_) {
+  } catch {
     return res.status(400).json({ error: 'Validation échouée pour la mise à jour du profil' })
   }
 }
@@ -25,7 +25,7 @@ export function validatePostuler(req: Request, res: Response, next: NextFunction
   try {
     postulerSchema.parse(req.body)
     next()
-  } catch (_) {
+  } catch {
     return res.status(400).json({ error: 'Validation échouée pour la postulation' })
   }
 }

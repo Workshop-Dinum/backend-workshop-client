@@ -21,7 +21,7 @@ export function validateLycee(req: any, res: any, next: any) {
   try {
     lyceeSchema.parse(req.body)
     next()
-  } catch (_) {
+  } catch {
     return res.status(400).json({ error: 'Validation échouée' })
   }
 }
