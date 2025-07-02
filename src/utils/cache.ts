@@ -8,9 +8,13 @@ if (isProd && process.env.REDIS_URL) {
   try {
     const redisClient = createClient({ url: process.env.REDIS_URL })
 
-    // Évite le crash Render si Redis n'est pas dispo
+    // Gestion propre de la connexion
+    redisClient.on('error', (err) => {
+      console.warn('⚠️ Redis error:', err.message)
+    })
+
     redisClient.connect().catch(err => {
-      console.warn('⚠️ Redis non disponible :', err.message)
+      console.warn('⚠️ Échec de connexion Redis (non bloquant) :', err.message)
     })
 
     cache = {
@@ -35,9 +39,14 @@ if (isProd && process.env.REDIS_URL) {
     }
   } catch (e) {
     const err = e as Error;
-    console.warn('⚠️ Échec init Redis :', err.message)
+    console.warn('⚠️ Exception lors de l’init Redis :', err.message)
+    fallbackToNodeCache()
   }
 } else {
+  fallbackToNodeCache()
+}
+
+function fallbackToNodeCache() {
   const nodeCache = new NodeCache({ stdTTL: 60 })
   cache = {
     async get(key: string) {
