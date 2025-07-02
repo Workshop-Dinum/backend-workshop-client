@@ -21,7 +21,7 @@ export async function authenticateLyceen(req: Request, res: Response, next: Next
 
     ;(req as any).user = { id: lyceen.id }
     next()
-  } catch (err) {
+  } catch (_) {
     return res.sendStatus(403)
   }
 }
