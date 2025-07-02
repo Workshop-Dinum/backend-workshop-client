@@ -12,8 +12,8 @@ export const lyceeSchema = z.object({
   email_contact: z.string().email(),
   telephone: z.string(),
   mot_de_passe: z.string().min(6), 
-  logo_url: z.string(),
-  site_web: z.string().optional(),
+  logo_url: z.string().optional(),
+  site_web: z.string(),
   periode_de_stage: z.string()
 })
 
