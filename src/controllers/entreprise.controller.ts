@@ -18,6 +18,7 @@ export async function createEntreprise(req: Request, res: Response) {
     const entreprise = await createEntrepriseService(req.body)
     res.status(201).json(entreprise)
   } catch (error: any) {
+    console.error('DETAIL ERREUR:', error);
     if (error.code === 'P2002') {
       return res.status(400).json({ error: 'Email ou SIRET déjà utilisé' })
     }
@@ -36,6 +37,7 @@ export async function publierOffre(req: Request, res: Response) {
     const offre = await createOffreService(entrepriseId, req.body)
     res.status(201).json(offre)
   } catch (error: any) {
+    console.error('DETAIL ERREUR:', error);
     if (error.message && error.message.includes('filières sont invalides')) {
       return res.status(500).json({ error: error.message })
     }
@@ -79,6 +81,7 @@ export async function proposerOffre(req: Request, res: Response) {
     const proposition = await proposerOffreALyceenService(entrepriseId, req.body)
     res.status(201).json(proposition)
   } catch (error: any) {
+    console.error('DETAIL ERREUR:', error);
     if (error.message === 'Offre introuvable' || error.message === 'Lycéen introuvable') {
       return res.status(404).json({ error: error.message })
     }
