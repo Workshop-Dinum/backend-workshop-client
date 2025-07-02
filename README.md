@@ -37,7 +37,7 @@ Ce projet est une API RESTful construite avec **Node.js**, **Express**, **Prisma
 
 1. **Cloner le dépôt**
    ```bash
-   git clone <url-du-repo>
+   git clone https://github.com/Workshop-Dinum/backend-workshop-client.git
    cd backend-workshop-client
    ```
 2. **Installer les dépendances**
