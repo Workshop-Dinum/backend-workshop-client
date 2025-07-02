@@ -41,8 +41,10 @@ async function createTestData() {
       periode_de_stage: 'janvier - mars'
     }
   })
-  const filiere = await prisma.filiere.create({ data: { nom: 'Informatique' } })
-  const niveau = await prisma.niveau.create({ data: { nom: 'Terminale' } })
+  const filiere = await prisma.filiere.findFirst({ where: { nom: 'Mathématiques' } })
+  if (!filiere) throw new Error('Aucune filière "Mathématiques" trouvée dans la base de test (seed manquant)')
+  const niveau = await prisma.niveau.findFirst({ where: { nom: 'Terminale' } })
+  if (!niveau) throw new Error('Aucun niveau "Terminale" trouvé dans la base de test (seed manquant)')
 
   // Créer lycéen
   const lyceen = await prisma.lyceen.create({
@@ -56,7 +58,8 @@ async function createTestData() {
   })
 
   // Créer une entreprise
-  const secteur = await prisma.secteurActivite.create({ data: { nom: 'Web' } })
+  const secteur = await prisma.secteurActivite.findFirst({ where: { nom: 'Informatique / Numérique' } })
+  if (!secteur) throw new Error('Aucun secteur "Informatique / Numérique" trouvé dans la base de test (seed manquant)')
   const entreprise = await prisma.entreprise.create({
     data: {
       nom: 'DevCorp',

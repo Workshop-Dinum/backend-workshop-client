@@ -25,9 +25,6 @@ beforeEach(async () => {
   await prisma.lycee.deleteMany();
   await prisma.offre.deleteMany();
   await prisma.entreprise.deleteMany();
-  await prisma.filiere.deleteMany();
-  await prisma.niveau.deleteMany();
-  await prisma.secteurActivite.deleteMany();
 });
 
 afterEach(async () => {
@@ -40,9 +37,6 @@ afterEach(async () => {
   await prisma.lycee.deleteMany();
   await prisma.offre.deleteMany();
   await prisma.entreprise.deleteMany();
-  await prisma.filiere.deleteMany();
-  await prisma.niveau.deleteMany();
-  await prisma.secteurActivite.deleteMany();
 });
 
 // Déconnexion propre après tous les tests

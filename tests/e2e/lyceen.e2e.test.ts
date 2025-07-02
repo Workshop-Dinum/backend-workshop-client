@@ -55,26 +55,10 @@ async function createTestData() {
     }
   })
 
-  // Créer un secteur d'activité de test
-  const secteurActivite = await prisma.secteurActivite.create({
-    data: {
-      nom: "Informatique"
-    }
-  })
-
-  // Créer une filière de test
-  const filiere = await prisma.filiere.create({
-    data: {
-      nom: "Développement Web"
-    }
-  })
-
-  // Créer un niveau de test
-  const niveau = await prisma.niveau.create({
-    data: {
-      nom: "Terminale"
-    }
-  })
+  // Récupérer une filière, un niveau, un secteur du seed
+  const filiere = await prisma.filiere.findFirst()
+  const niveau = await prisma.niveau.findFirst()
+  const secteurActivite = await prisma.secteurActivite.findFirst()
 
   return { lycee, filiere, niveau, secteurActivite }
 }
@@ -84,12 +68,10 @@ describe('E2E - Lycéens', () => {
   let token: string
 
   beforeEach(async () => {
-    // Nettoyer la base
+    // Nettoyer la base (on ne touche pas aux tables de référence seedées)
     await prisma.lyceen.deleteMany()
     await prisma.lycee.deleteMany()
-    await prisma.filiere.deleteMany()
-    await prisma.niveau.deleteMany()
-    await prisma.secteurActivite.deleteMany()
+    // PAS de deleteMany sur filiere, niveau, secteurActivite
 
     // Créer les données de test
     testData = await createTestData()

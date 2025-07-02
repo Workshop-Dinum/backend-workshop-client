@@ -5,14 +5,20 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Helpers pour créer les entités nécessaires
-async function creerSecteur(nom = 'Informatique') {
-  return prisma.secteurActivite.create({ data: { nom } });
+async function creerSecteur(nom = 'Informatique / Numérique') {
+  const secteur = await prisma.secteurActivite.findFirst({ where: { nom } });
+  if (!secteur) throw new Error(`Aucun secteur "${nom}" trouvé dans la base de test (seed manquant)`);
+  return secteur;
 }
-async function creerNiveau(nom = 'Bac Pro') {
-  return prisma.niveau.create({ data: { nom } });
+async function creerNiveau(nom = 'Terminale') {
+  const niveau = await prisma.niveau.findFirst({ where: { nom } });
+  if (!niveau) throw new Error(`Aucun niveau "${nom}" trouvé dans la base de test (seed manquant)`);
+  return niveau;
 }
-async function creerFiliere(nom = 'SN') {
-  return prisma.filiere.create({ data: { nom } });
+async function creerFiliere(nom = 'Mathématiques') {
+  const filiere = await prisma.filiere.findFirst({ where: { nom } });
+  if (!filiere) throw new Error(`Aucune filière "${nom}" trouvée dans la base de test (seed manquant)`);
+  return filiere;
 }
 async function creerEntreprise(data: any = {}) {
   const secteur = data.secteurId ? { id: data.secteurId } : await creerSecteur();
@@ -189,7 +195,7 @@ describe('Parcours Entreprise - E2E', () => {
       expect(res.body.error).toMatch(/filières sont invalides/);
     });
     it('échoue si niveau inexistant', async () => {
-      const filiere2 = await creerFiliere('Autre');
+      const filiere2 = await creerFiliere('Mathématiques');
       const res = await creerOffre(token, { niveauId: 9999, filiereIds: [filiere2.id] });
       expect(res.status).toBe(404);
     });
@@ -242,7 +248,7 @@ describe('Parcours Entreprise - E2E', () => {
     });
     it('échoue si lycée inexistant', async () => {
       const res = await request(app).get('/api/entreprises/lycees/9999/eleves').set('Authorization', `Bearer ${token}`);
-      expect(res.status).toBe(200); // Retourne [] si pas trouvé
+      expect(res.status).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
     });
     it('échoue si token manquant', async () => {
@@ -295,7 +301,7 @@ describe('Parcours Entreprise - E2E', () => {
     });
     it("échoue si offre n'appartient pas à l'entreprise", async () => {
       // Créer une autre entreprise et une offre
-      const secteur = await creerSecteur('Autre');
+      const secteur = await creerSecteur('Informatique / Numérique');
       await creerEntreprise({ contact_email: 'autre@e.com', siret: '222222222', secteurId: secteur.id });
       const login2 = await loginEntreprise('autre@e.com', 'azerty1');
       const token2 = login2.body.token;
@@ -371,4 +377,4 @@ describe('Parcours Entreprise - E2E', () => {
       expect(res.body[0]).toHaveProperty('nom');
     });
   });
-}); 
+});

@@ -18,14 +18,14 @@ export async function createEntreprise(req: Request, res: Response) {
     const entreprise = await createEntrepriseService(req.body)
     res.status(201).json(entreprise)
   } catch (error: any) {
-    console.error('DETAIL ERREUR:', error);
     if (error.code === 'P2002') {
       return res.status(400).json({ error: 'Email ou SIRET déjà utilisé' })
     }
     if (error.name === 'ZodError') {
       return res.status(400).json({ error: 'Validation échouée', details: error.errors })
     }
-    console.error('[createEntreprise] Erreur serveur')
+    // Log uniquement les erreurs inattendues
+    console.error('[createEntreprise] ERREUR INATTENDUE:', error)
     res.status(500).json({ error: 'Erreur lors de la création de l’entreprise' })
   }
 }
@@ -37,7 +37,6 @@ export async function publierOffre(req: Request, res: Response) {
     const offre = await createOffreService(entrepriseId, req.body)
     res.status(201).json(offre)
   } catch (error: any) {
-    console.error('DETAIL ERREUR:', error);
     if (error.message && error.message.includes('filières sont invalides')) {
       return res.status(500).json({ error: error.message })
     }
@@ -47,7 +46,8 @@ export async function publierOffre(req: Request, res: Response) {
     if (error.name === 'ZodError') {
       return res.status(400).json({ error: 'Validation échouée', details: error.errors })
     }
-    console.error('[publierOffre] Erreur serveur')
+    // Log uniquement les erreurs inattendues
+    console.error('[publierOffre] ERREUR INATTENDUE:', error)
     res.status(500).json({ error: 'Erreur lors de la publication de l’offre' })
   }
 }
@@ -81,7 +81,6 @@ export async function proposerOffre(req: Request, res: Response) {
     const proposition = await proposerOffreALyceenService(entrepriseId, req.body)
     res.status(201).json(proposition)
   } catch (error: any) {
-    console.error('DETAIL ERREUR:', error);
     if (error.message === 'Offre introuvable' || error.message === 'Lycéen introuvable') {
       return res.status(404).json({ error: error.message })
     }
@@ -91,7 +90,8 @@ export async function proposerOffre(req: Request, res: Response) {
     if (error.name === 'ZodError') {
       return res.status(400).json({ error: 'Validation échouée', details: error.errors })
     }
-    console.error('[proposerOffre] Erreur serveur')
+    // Log uniquement les erreurs inattendues
+    console.error('[proposerOffre] ERREUR INATTENDUE:', error)
     res.status(500).json({ error: 'Erreur lors de l’envoi de la proposition' })
   }
 }

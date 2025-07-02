@@ -49,6 +49,7 @@
     "@types/node": "^24.0.4",
     "@types/node-cache": "^4.2.5",
     "@types/nodemailer": "^6.4.17",
+    "@types/redis": "^4.0.11",
     "@types/supertest": "^6.0.3",
     "cross-env": "^7.0.3",
     "eslint": "^9.29.0",

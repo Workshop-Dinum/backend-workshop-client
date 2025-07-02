@@ -58,18 +58,12 @@ async function createTestData() {
   })
 
   // Créer une filière de test
-  const filiere = await prisma.filiere.create({
-    data: {
-      nom: "Développement Web"
-    }
-  })
+  const filiere = await prisma.filiere.findFirst({ where: { nom: "Mathématiques" } })
+  if (!filiere) throw new Error('Aucune filière "Mathématiques" trouvée dans la base de test (seed manquant)')
 
   // Créer un niveau de test
-  const niveau = await prisma.niveau.create({
-    data: {
-      nom: "Terminale"
-    }
-  })
+  const niveau = await prisma.niveau.findFirst({ where: { nom: "Terminale" } })
+  if (!niveau) throw new Error('Aucun niveau "Terminale" trouvé dans la base de test (seed manquant)')
 
   // Créer un lycéen de test
   const lyceen = await prisma.lyceen.create({
@@ -92,8 +86,6 @@ describe('E2E - Password Reset', () => {
   beforeEach(async () => {
     await prisma.lyceen.deleteMany()
     await prisma.lycee.deleteMany()
-    await prisma.filiere.deleteMany()
-    await prisma.niveau.deleteMany()
     testData = await createTestData()
   })
 

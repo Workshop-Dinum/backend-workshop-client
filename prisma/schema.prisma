@@ -28,7 +28,7 @@ model Lycee {
 
 model Filiere {
   id       Int             @id @default(autoincrement())
-  nom      String
+  nom      String @unique
   lycees   LyceeFiliere[]
   lyceens  Lyceen[]
   offres   OffreFiliere[]
@@ -36,7 +36,7 @@ model Filiere {
 
 model Niveau {
   id       Int       @id @default(autoincrement())
-  nom      String
+  nom      String @unique
   lyceens  Lyceen[]
   offres   Offre[]
 }
@@ -72,7 +72,7 @@ model Lyceen {
 
 model SecteurActivite {
   id          Int          @id @default(autoincrement())
-  nom         String
+  nom         String  @unique
   entreprises Entreprise[]
 }
 
