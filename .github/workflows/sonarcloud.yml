@@ -41,16 +41,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up env
+      - name: Set up environment variables
         run: |
           echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/workshop_test" >> $GITHUB_ENV
           echo "JWT_SECRET=supersecret" >> $GITHUB_ENV
           echo "FRONTEND_URL=https://workshop-dinum-frontend-workshop-cl.vercel.app/" >> $GITHUB_ENV
 
-      - name: Prisma migrate
+      - name: Run Prisma migrations
         run: npx prisma migrate deploy
 
-      - name: Prisma seed
+      - name: Seed database
         run: npx prisma db seed
 
       - name: Run tests with coverage
@@ -66,5 +66,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=Workshop-Dinum_backend-workshop-client
+            -Dsonar.organization=workshopdinum
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
